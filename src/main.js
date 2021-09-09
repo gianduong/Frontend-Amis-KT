@@ -6,6 +6,7 @@ import VueRouter from 'vue-router'
 import VTooltip from 'v-tooltip'
 import Store from "./components/Store/Store.vue"
 import EmployeeList from "./components/Employee/EmployeeList.vue"
+import Money from "./components/Accountant/Money.vue"
 Vue.config.productionTip = false;
 Vue.use(VTooltip);
 Vue.use(vueDebounce, {
@@ -15,6 +16,7 @@ Vue.use(vueDebounce, {
 const routes = [
   { path: '/Store', component: Store },
   { path: '/EmployeeList', component: EmployeeList },
+  { path: '/app/CA/CAProcess', component: Money },
 ]
 //2. Khởi tạo router:
 const router = new VueRouter({

@@ -32,7 +32,7 @@
           </v-tooltip>
         </router-link>
 
-        <router-link class="nav-item" to="/Store"> 
+        <router-link class="nav-item" to="/app/CA/CAProcess"> 
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
               <div class="nav-item-link" v-bind="attrs" v-on="on" 
