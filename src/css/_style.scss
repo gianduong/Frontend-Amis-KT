@@ -1,0 +1,10 @@
+$color-write: #fff;
+
+@mixin WidthHeight($w, $h) {
+    width: $w;
+    height: $h;
+}
+@mixin Display {
+    display: flex;
+    align-items: center;
+}
