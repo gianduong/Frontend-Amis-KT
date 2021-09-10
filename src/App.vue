@@ -52,6 +52,9 @@ export default {
   border-color: #90c143;
 }
 
+.v-text-field.v-input__control .v-input__slot .v-text-field__slot {
+  border-color: #90c143;
+}
 .theme--light.v-label {
   color: #000;
 }
@@ -65,7 +68,10 @@ export default {
   border-bottom: 1.5px solid green;
   padding-left: 10px;
 }
-
+.theme--light.v-input:not(.v-input--is-disabled) textarea{
+  border: none;
+  border-radius: 2px;
+}
 .theme--light.v-input:not(.v-input--is-disabled) input:hover {
   border-color: #2ca01c;
   box-shadow: 1px 1px 1px #e6dada;
@@ -74,5 +80,4 @@ export default {
 .theme--light > .v-pagination > .v-pagination__item{
   border: none;
 }
-
 </style>

@@ -109,6 +109,12 @@ tr:hover td {
 .m-120 {
   min-width: 120px;
 }
+.m-300 {
+  min-width: 300px;
+}
+.m-400 {
+  min-width: 400px;
+}
 .th-sticky {
   right: 0;
   text-align: center !important;

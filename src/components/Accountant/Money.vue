@@ -41,22 +41,28 @@
         </div>
       </div>
       <div class="process-container">
-        <v-tabs fixed-tabs icons-and-text height="80px" background-color="#fff" color="green">
-          <v-tab>
+        <v-tabs
+          fixed-tabs
+          icons-and-text
+          height="80px"
+          background-color="#fff"
+          color="green"
+        >
+          <v-tab to="/DI/DIVendor">
             Khách hàng
-            <v-icon>mdi-account-tie-outline</v-icon>
+            <v-icon color="green">mdi-account-tie-outline</v-icon>
           </v-tab>
-          <v-tab>           
+          <v-tab to="/DI/DIVendor">
             Nhà cung cấp
-            <v-icon>mdi-account-filter-outline</v-icon> 
+            <v-icon color="green">mdi-account-filter-outline</v-icon>
           </v-tab>
-          <v-tab> 
-            Nhân viên 
-            <v-icon>mdi-account-multiple</v-icon> 
+          <v-tab to="/Employee">
+            Nhân viên
+            <v-icon color="green">mdi-account-multiple</v-icon>
           </v-tab>
           <v-tab>
             Tính tỷ giá xuất quỹ
-            <v-icon>mdi-alarm-panel-outline</v-icon> 
+            <v-icon color="green">mdi-alarm-panel-outline</v-icon>
           </v-tab>
         </v-tabs>
       </div>
@@ -105,6 +111,7 @@ $color-active: #111;
 .content-container {
   background: #f8f8f8;
   padding: 0 20px;
+  box-sizing: border-box;
   /**-------title--------- */
   .content-title {
     @include flex;
@@ -130,7 +137,7 @@ $color-active: #111;
       display: flex;
       flex-direction: column;
       margin-left: 20%;
-      margin-top: 10px; 
+      margin-top: 10px;
 
       .major-title {
         @include widthHeight(100%, 50px);
@@ -165,10 +172,22 @@ $color-active: #111;
     }
   }
 }
-
+.img-hover {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;
+}
 .img-hover:hover {
   border: 0.5px solid #f8f8f8;
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  // width: calc(100% - 4px);
+  // height: calc(100% - 4px);
+}
+
+.tab-router {
+  width: 167px;
+  height: 80px;
+  text-decoration-line: none;
 }
 </style>

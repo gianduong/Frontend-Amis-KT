@@ -202,3 +202,10 @@ label {
   font-size: 13px;
   color: #000;
 }
+/** css v-tabs */ 
+.text-transform{
+  text-transform: none;
+}
+.color-white{
+  color: #fff;
+}
