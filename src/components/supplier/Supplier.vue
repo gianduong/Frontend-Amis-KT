@@ -8,7 +8,49 @@
 
       <!-- Dialog add  -->
       <!--  -->
-      <div class="mi-tour mi mi-24"></div>
+      <div class="title-option">
+        <div class="mi-tour mi mi-24" style="border: 1px solid black"></div>
+        <router-link
+          class="link-huong-dan"
+          to="/CA/CAProcess"
+          style="margin: 10px 20px 0 20px"
+        >
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <span v-bind="attrs" v-on="on" style="z-index: 1999"
+                >Hướng dẫn</span
+              >
+            </template>
+            <span>Hướng dẫn</span>
+          </v-tooltip>
+        </router-link>
+
+        <v-menu v-model="menuUtilities" bottom offset-y left>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              rounded
+              color="#ffffff"
+              style="border: 1px solid black; text-transform: none; color: #111"
+            >
+              Tiện ích
+              <div class="mi-arrow-up--black mi mi-16"></div>
+            </v-btn>
+          </template>
+          <v-card height="40px" width="260px">
+            <v-btn width="100%" height="100%" @click="dialogSuppliers = true">
+              Gộp nhà cung cấp tự động
+            </v-btn>
+          </v-card>
+        </v-menu>
+      </div>
+      <v-dialog v-model="dialogSuppliers" width="500px">
+        <v-card width="500px" height="500px">
+          <h1>Gộp nhà cung cấp tự động</h1>
+          
+        </v-card>
+      </v-dialog>
       <div class="dialog-add-update">
         <v-dialog
           v-model="isShowDialogAddOrUpdate"
@@ -17,11 +59,11 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <div class="btn-add" v-bind="attrs" v-on="on">
-              <Button content="Thêm mới nhân viên" v-bind="attrs" v-on="on" />
+              <Button content="Thêm" v-bind="attrs" v-on="on" />
             </div>
           </template>
 
-          <v-card height="600px" @keydown.esc="closeDialog">
+          <v-card height="620px" @keydown.esc="closeDialog">
             <SupplierDetail
               :employeeDetail="employeeDetail"
               @handleCloseDialog="closeDialog"
@@ -98,17 +140,25 @@
       </v-snackbar>
       <!-- end region -->
     </div>
-    <div class="tab-sort">
+    <div class="tab-sort" :class="{ 'tab-sort-hidden': isTabSortHidden }">
       <v-tooltip bottom style="z-index: 100000">
         <template v-slot:activator="{ on, attrs }">
           <v-tabs
-            v-bind="attrs" v-on="on"
+            v-bind="attrs"
+            v-on="on"
             background-color="#FF7F2C"
             height="60px"
             class="tab-sort-item"
           >
-            <v-tab style="color: #fff; text-transform: none; witdh: 463px"
-              >Nợ quá hạn
+            <v-tab style="color: #fff; text-transform: none">
+              <div>
+                <div class="tab-number tab-number-margin-1">100</div>
+                <span>Nợ quá hạn</span>
+              </div>
+              <div class="funnel-icon mi funnel-icon-position-no">
+                <div class="space-3">.</div>
+                <div class="space-3">.</div>
+              </div>
             </v-tab>
           </v-tabs>
         </template>
@@ -121,13 +171,20 @@
         height="60px"
         class="tab-sort-item"
       >
-        <v-tab style="color: #fff; text-transform: none"
-          >Tổng nợ phải thu</v-tab
+        <v-tab style="color: #fff; text-transform: none">
+          <div>
+            <div class="tab-number tab-number-margin-2">100</div>
+            <span>Tổng nợ phải thu</span>
+          </div>
+          <div class="funnel-icon mi funnel-icon-position-thu">
+            <div class="space-3">.</div>
+          </div></v-tab
         >
       </v-tabs>
       <v-tabs background-color="#74CB2F" show-arrows height="60px">
         <v-tab style="color: #fff; text-transform: none"
-          >Đã thanh toán(30 ngày gần đây)</v-tab
+          >Đã thanh toán(30 ngày gần đây)
+          <div class="space-3">.</div></v-tab
         >
       </v-tabs>
     </div>
@@ -135,7 +192,149 @@
     <!--  -->
     <div :class="{ loading: showLoading }"></div>
     <div class="main-content">
+      <div
+        class="box-resize mi-24"
+        @click="isTabSortHidden = !isTabSortHidden"
+        :class="{ 'box-rotate': !isTabSortHidden }"
+      >
+        <div
+          class="mi mi-16 mi-chevron-down--primary"
+          style="margin-left: 3px"
+        ></div>
+      </div>
       <div class="search-content">
+        <div class="mi-arrow-check-all mi mi-24"></div>
+        <v-btn
+          class="btn-execution-position"
+          rounded
+          disabled
+          color="#ffffff"
+          style="border: 1px solid black; text-transform: none"
+        >
+          Thực hiện hàng loạt
+          <div class="mi-arrow-up--black mi mi-16"></div>
+        </v-btn>
+
+        <v-menu
+          style="z-index: 100000"
+          v-model="menu"
+          :close-on-content-click="false"
+          :nudge-width="200"
+          bottom
+          offset-y
+          left
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              class="btn-filter-position"
+              rounded
+              color="#ffffff"
+              style="border: 1px solid black; text-transform: none; color: #111"
+            >
+              Lọc
+              <div class="mi-arrow-up--black mi mi-16"></div>
+            </v-btn>
+          </template>
+
+          <v-card width="533px" height="292px">
+            <div class="card-filter">
+              <div class="card-filter-1">
+                <div class="flex-collum size-49">
+                  <label>Loại</label>
+                  <v-autocomplete
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+                <div class="flex-collum size-49">
+                  <label>Nhóm</label>
+                  <v-autocomplete
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+              </div>
+              <div class="card-filter-2">
+                <div class="flex-collum size-49">
+                  <label>Tình trạng công nợ</label>
+                  <v-autocomplete
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+                <div class="flex-collum size-49">
+                  <label>Trạng thái</label>
+                  <v-autocomplete
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+              </div>
+              <div class="card-filter-3">
+                <div class="flex-collum size-32">
+                  <label>Tỉnh/TP</label>
+                  <v-autocomplete
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+                <div class="flex-collum size-32">
+                  <label>Quận/Huyện</label>
+                  <v-autocomplete
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+                <div class="flex-collum size-32">
+                  <label>Xã/Phường</label>
+                  <v-autocomplete
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+              </div>
+              <div class="card-filter-4"></div>
+              <div class="card-filter-5">
+                <div class="btn-cancel">
+                  <Button :content="'Đặt lại'" :btnWhite="true" tabindex="0" />
+                </div>
+                <div class="btn-action">
+                  <Button :content="'Lọc'" tabindex="0" />
+                </div>
+              </div>
+            </div>
+          </v-card>
+        </v-menu>
         <div class="search-wrapper">
           <InputField
             :placeholder="'Nhập từ khóa tìm kiếm'"
@@ -217,7 +416,7 @@
           <tbody>
             <!--  -->
             <!-- employee detail -->
-            <Employee
+            <SupplierRow
               style="cursor: pointer"
               v-for="(employee, index) in listEmployee"
               :key="index"
@@ -297,6 +496,7 @@ import axios from "axios";
 import "../../css/table.css";
 import Employee from "../Employee/Employee.vue";
 import SupplierDetail from "./SupplierDetail.vue";
+import SupplierRow from "./SupplierRow.vue";
 import EmployeeDetail from "../Employee/EmployeeDetail.vue";
 import queryString from "query-string";
 import DialogNotify from "../commons/DialogNotify.vue";
@@ -314,12 +514,20 @@ export default {
     Autocomplete,
     EmployeeDetail,
     SupplierDetail,
+    SupplierRow,
   },
   //#endregion
 
   //#region Data
   data() {
     return {
+      dialog: false,
+      dialog2: false,
+      dialog3: false,
+      dialogSuppliers: false,
+      menu: false, // menu lọc
+      menuUtilities: false, // Menu tiện ích
+      isTabSortHidden: false, // kiểm tra tab sort
       isCheckclone: false, // kiểm tra nhân bản
       isCheckBox: false, // thay đổi checkBox
       filterValue: "", // giá trị ô filter
@@ -735,6 +943,43 @@ $color-active: #111;
       font-family: "notosans-bold";
       color: #111;
     }
+
+    .title-option {
+      @include flex;
+      width: 76%;
+      justify-content: flex-end;
+    }
+
+    .link-huong-dan {
+      text-decoration: none;
+      margin-top: 5px;
+    }
+    .link-huong-dan:hover {
+      text-decoration: underline;
+    }
+
+    .menu-utilities-position {
+      position: absolute;
+      right: 20px;
+    }
+  }
+
+  .box-resize {
+    border: 1px solid #c7c7c7;
+    align-items: center;
+    display: flex;
+    position: relative;
+    top: -12px;
+    right: -1536px;
+    z-index: 10000;
+  }
+
+  .box-rotate {
+    transform: rotate(180deg);
+  }
+
+  .tab-sort-hidden {
+    display: none;
   }
 
   .main-content {
@@ -759,7 +1004,7 @@ $color-active: #111;
   }
   /*-------------------- icon content------------------- */
   .search-content {
-    padding: 16px;
+    padding: 0 16px 16px 16px;
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
@@ -859,7 +1104,10 @@ $color-active: #111;
     cursor: pointer;
   }
 }
-
+.flex-collum {
+  display: flex;
+  flex-direction: column;
+}
 /** icon */
 .mi-tour {
   background-position: -984px -145px;
@@ -870,16 +1118,163 @@ $color-active: #111;
   min-width: 24px;
   min-height: 24px;
 }
+.mi-16 {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+}
+
 .mi {
   background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat;
   cursor: pointer;
 }
 
+.mi-arrow-check-all {
+  background-position: -256px -143px;
+  position: absolute;
+  left: 40px;
+}
+
+.mi-arrow-up--black {
+  background-position: -560px -359px;
+}
+
+.mi-chevron-down--primary {
+  background-position: -176px -360px;
+}
+
+.funnel-icon {
+  height: 22px;
+  position: absolute;
+  width: 18px;
+  background-position: -1814px -202px;
+}
+
+.funnel-icon-position-no {
+  right: -400px;
+  top: 5px;
+}
+
+.funnel-icon-position-thu {
+  right: -360px;
+  top: 5px;
+}
+
+/** tab */
 .tab-sort {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 30px;
 }
 .tab-sort-item {
   margin-right: 10px;
+}
+
+/** btn */
+.btn-execution-position {
+  position: absolute;
+  left: 80px;
+}
+.btn-filter-position {
+  position: absolute;
+  left: 285px;
+}
+/** Card filter */
+.card-filter {
+  display: flex;
+  flex-direction: column;
+  @include widthHeight(100%, 100%);
+  align-items: center;
+  .card-filter-1 {
+    @include widthHeight(94%, 20%);
+    margin-top: 4%;
+    @include flex;
+    justify-content: space-between;
+  }
+  .card-filter-2 {
+    @include widthHeight(94%, 20%);
+    @include flex;
+    justify-content: space-between;
+  }
+  .card-filter-3 {
+    @include widthHeight(94%, 20%);
+    @include flex;
+    justify-content: space-between;
+  }
+  .card-filter-4 {
+    @include widthHeight(94%, 0.5%);
+    background: #e0e0e0;
+    margin-top: 4%;
+  }
+  .card-filter-5 {
+    @include widthHeight(94%, 20%);
+    bottom: 4%;
+    position: absolute;
+
+    .btn-cancel {
+      margin-top: 10px;
+    }
+
+    .btn-action {
+      position: absolute;
+      right: 0;
+      top: 10px;
+    }
+  }
+}
+
+.modal-close {
+  padding-left: 12px;
+  margin-right: 10px;
+  @include flex;
+  position: absolute;
+  right: 10px;
+  .modal-icon {
+    @include widthHeight(24px, 24px);
+    cursor: pointer;
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat;
+  }
+  .help-icon {
+    background-position: -89px -144px;
+    margin-right: 10px;
+  }
+  .close-icon {
+    background-position: -144px -144px;
+  }
+}
+
+/**--------------Linh tinh------ */
+/** size */
+.size-49 {
+  width: 49%;
+}
+
+.size-45 {
+  width: 45%;
+}
+.size-32 {
+  width: 32.6%;
+}
+.size-100 {
+  width: 100%;
+}
+
+.space-3 {
+  position: absolute;
+  right: -244px;
+}
+
+.tab-number {
+  font-size: 22px;
+}
+.tab-number-margin-1 {
+  margin-left: -50px;
+}
+.tab-number-margin-2 {
+  margin-left: -88px;
+}
+.tab-number-margin-3 {
+  margin-left: -50px;
 }
 </style>

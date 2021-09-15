@@ -8,7 +8,6 @@
       :class="[searchField ? 'search-field' : '']"
     >
       <input
-        style="border-bottom: 2px solid green"
         ref="autoFocus"
         :type="type ? type : 'text'"
         :placeholder="placeholder"
@@ -108,10 +107,12 @@ export default {
   outline: none;
   width: 100%;
   height: 100%;
+  border-bottom: 2px solid #949494;
   /* max-height: 32px; */
 }
 .input-field input:focus {
-  border-color: #2ca01c;
+  border-color: #babec5;
+  border-bottom: 2px solid green;
 }
 ::placeholder {
   font-style: italic;
@@ -162,6 +163,7 @@ input[type="date"] {
 input[type="date"].active {
   color: #000;
   font-style: normal;
+  border-bottom: 2px solid green;
 }
 input[type="date"]::-webkit-calendar-picker-indicator {
   color: #babec5;
@@ -175,13 +177,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 input[type="date"]:hover {
   cursor: pointer;
+  border-bottom: 2px solid green;
 }
 
-input {
+/* input {
   box-shadow: 1px 1px 1px #e6dada;
-}
+} */
 
-input:hover {
+/* input:hover {
   border: 1px solid green;
-}
+} */
 </style>

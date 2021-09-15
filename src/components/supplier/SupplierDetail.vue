@@ -52,7 +52,7 @@
         <div class="checkbox">
           <div @click="isCheckBox = !isCheckBox">
             <CheckboxField
-              :isCheck="!isCheckBox"
+              :isCheck="isCheckBox"
               v-on:click="handleCheckBox"
               :content="'Là khách hàng'"
               style="margin-right: 20px"
@@ -186,27 +186,27 @@
               style="margin-left: 30px"
             >
               <v-tab
-                style="text-transform: none; font-size: 12px"
+                style="text-transform: none; font-size: 12px; color:#111; border:1.5px solid #C9CCD2;"
                 @click="tab = '1'"
                 >Liên hệ</v-tab
               >
               <v-tab
-                style="text-transform: none; font-size: 12px"
+                style="text-transform: none; font-size: 12px;color:#111; border:1.5px solid #C9CCD2;"
                 @click="tab = '2'"
                 >Điều khoản thanh toán</v-tab
               >
               <v-tab
-                style="text-transform: none; font-size: 12px"
+                style="text-transform: none; font-size: 12px;color:#111; border:1.5px solid #C9CCD2;"
                 @click="tab = '3'"
                 >Tài khoản ngân hàng</v-tab
               >
               <v-tab
-                style="text-transform: none; font-size: 12px"
+                style="text-transform: none; font-size: 12px;color:#111; border:1.5px solid #C9CCD2;"
                 @click="tab = '4'"
                 >Địa chỉ khác</v-tab
               >
               <v-tab
-                style="text-transform: none; font-size: 12px"
+                style="text-transform: none; font-size: 12px;color:#111; border:1.5px solid #C9CCD2;"
                 @click="tab = '5'"
                 >Ngân hàng</v-tab
               >
@@ -216,49 +216,156 @@
                 <v-card height="180px">
                   <div class="bottom-2">
                     <div class="bottom-left">
-                      <h1>Người liên hệ</h1>
-                      <div class="attr-ma">
+                      <h1 class="bottom-h1">Người liên hệ</h1>
+                      <div class="bottom-left-1">
+                        <div
+                          class="attr-xungho"
+                          style="width: 30%; margin-right: 10px"
+                        >
+                          <v-autocomplete
+                            solo
+                            color="green"
+                            v-model="employee.deparmentId"
+                            :items="listDepartment"
+                            item-text="deparmentName"
+                            item-value="deparmentId"
+                            no-data-text="Không có dữ liệu"
+                            :error="errorNotifyDepartment.status"
+                            :error-messages="errorNotifyDepartment.errorMessage"
+                          ></v-autocomplete>
+                        </div>
+                        <div class="attr-ma" style="width: 60%">
                           <InputField
-                            :label="'Họ và tên'"
                             v-model="employee.employeeCode"
                             :errorNotify="errorNotifyCode"
                             ref="toFocus"
                           />
+                        </div>
                       </div>
                       <div class="attr-ten" style="width: 262px">
-                          <InputField
-                            :label="'Email'"
-                            :required="true"
-                            v-model="employee.fullName"
-                            :errorNotify="errorNotifyFullName"
-                          />
+                        <InputField
+                          v-model="employee.fullName"
+                          :errorNotify="errorNotifyFullName"
+                        />
                       </div>
                       <div class="attr-ten" style="width: 262px">
-                          <InputField
-                            :label="'Số điện thoại'"
-                            :required="true"
-                            v-model="employee.fullName"
-                            :errorNotify="errorNotifyFullName"
-                          />
+                        <InputField
+                          v-model="employee.fullName"
+                          :errorNotify="errorNotifyFullName"
+                        />
                       </div>
+                      <h1 class="bottom-h1">Đại diện theo PL</h1>
                       <div class="attr-ten" style="width: 262px">
-                          <InputField
-                            :label="'Đại diện theo PL'"
-                            :required="true"
-                            v-model="employee.fullName"
-                            :errorNotify="errorNotifyFullName"
-                          />
+                        <InputField
+                          v-model="employee.fullName"
+                          :errorNotify="errorNotifyFullName"
+                        />
                       </div>
                     </div>
                     <div class="bottom-right">
-                      <h1>Người nhận Hóa đơn điện tử</h1>
+                      <h1 class="bottom-h1">Người nhận Hóa đơn điện tử</h1>
+                      <div class="attr-ten" style="width: 90%">
+                        <InputField
+                          v-model="employee.fullName"
+                          :errorNotify="errorNotifyFullName"
+                        />
+                      </div>
+                      <div class="attr-ten" style="width: 90%">
+                        <InputField
+                          v-model="employee.fullName"
+                          :errorNotify="errorNotifyFullName"
+                        />
+                      </div>
+                      <div class="attr-ten" style="width: 45%">
+                        <InputField
+                          v-model="employee.fullName"
+                          :errorNotify="errorNotifyFullName"
+                        />
+                      </div>
                     </div>
                   </div>
                 </v-card>
               </v-tab-item>
               <v-tab-item value="2">
-                <v-card flat>
-                  <v-card-text v-text="'1232312312321'"></v-card-text>
+                <v-card height="180px">
+                  <div class="bottom-2">
+                    <div class="bottom-slide-2">
+                      <div class="bottom-2-top">
+                        <div class="attr-e">
+                          <InputField
+                            :label="'Điều khoản thanh toán'"
+                            v-model="employee.dateOfBirth"
+                            :errorNotify="errorNotifyDob"
+                          />
+                        </div>
+                        <div class="attr-e">
+                          <InputField
+                            :label="'số ngày được nợ'"
+                            v-model="employee.dateOfBirth"
+                            :errorNotify="errorNotifyDob"
+                          />
+                        </div>
+                        <div class="attr-e">
+                          <InputField
+                            :label="'Số nợ tối đa'"
+                            v-model="employee.dateOfBirth"
+                            :errorNotify="errorNotifyDob"
+                          />
+                        </div>
+                      </div>
+                      <div class="bottom-2-bot">
+                        <label>Tài khoản công nợ phải thu</label>
+                        <div
+                          class="attr-x"
+                          style="width: 30%; margin-right: 10px"
+                        >
+                          <v-autocomplete
+                            solo
+                            color="green"
+                            v-model="employee.deparmentId"
+                            :items="listDepartment"
+                            item-text="deparmentName"
+                            item-value="deparmentId"
+                            no-data-text="Không có dữ liệu"
+                            :error="errorNotifyDepartment.status"
+                            :error-messages="errorNotifyDepartment.errorMessage"
+                          ></v-autocomplete>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </v-card>
+              </v-tab-item>
+              <v-tab-item value="3">
+                <v-card height="180px">
+                  <div class="bottom-2">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th class="m-20">
+                            Số tài khoản
+                            <div class="line"></div>
+                          </th>
+                          <th class="m-27">
+                            Tên ngân hàng
+                            <div class="line"></div>
+                          </th>
+                          <th class="m-20">
+                            Chi nhánh
+                            <div class="line"></div>
+                          </th>
+                          <th class="m-27">
+                            Tỉnh/Thành phố của ngân hàng
+                            <div class="line"></div>
+                          </th>
+                          <th class="th-sticky m-6">
+                            <div class="border-left"></div>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
                 </v-card>
               </v-tab-item>
             </v-tabs-items>
@@ -303,7 +410,7 @@
 
 <script>
 //#region Import dữ liệu
-import Combobox from "../commons/Combobox.vue"
+import Combobox from "../commons/Combobox.vue";
 import Button from "../commons/Button.vue";
 import InputField from "../commons/InputField.vue";
 import CheckboxField from "../commons/CheckboxField.vue";
@@ -336,8 +443,7 @@ export default {
   data() {
     return {
       // tab
-      tab: null,
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      tab: "1",
       // Nhân viên và các trường của nhân viên
       employee: {
         employeeId: "",
@@ -1053,12 +1159,37 @@ $color-title: #111;
           margin-left: 30px;
           z-index: 10000;
           border: 1px solid #e0e0e0;
+          .bottom-h1 {
+            font-size: 12px;
+            font-weight: 700;
+            padding-bottom: 4px;
+            color: #111;
+          }
 
           .bottom-left {
             @include widthHeight(50%, 100%);
+            .bottom-left-1 {
+              @include flex;
+            }
           }
           .bottom-right {
             @include widthHeight(50%, 100%);
+          }
+          .bottom-slide-2 {
+            display: flex;
+            flex-direction: column;
+
+            .bottom-2-top {
+              display: flex;
+              height: 30px;
+
+              .attr-e {
+                margin-right: 10px;
+              }
+            }
+            .bottom-2-bot {
+              margin-top: 30px;
+            }
           }
         }
       }

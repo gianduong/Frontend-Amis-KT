@@ -2,8 +2,8 @@
   <div class="content-container">
     <div class="content-title">
       <v-tabs background-color="#F4F5F6" color="green">
-        <v-tab>Quy chình</v-tab>
-        <v-tab>Thu, chi tiền</v-tab>
+        <v-tab style="text-transform: none;">Quy chình</v-tab>
+        <v-tab  style="text-transform: none;">Thu, chi tiền</v-tab>
       </v-tabs>
     </div>
     <!-- main content -->
@@ -48,20 +48,20 @@
           background-color="#fff"
           color="green"
         >
-          <v-tab to="/DI/DIVendor">
+          <v-tab to="/DI/DIVendor" style="text-transform: none;">
             Khách hàng
             <v-icon color="green">mdi-account-tie-outline</v-icon>
           </v-tab>
-          <v-tab to="/DI/DIVendor">
+          <v-tab to="/DI/DIVendor" style="text-transform: none;">
             Nhà cung cấp
             <v-icon color="green">mdi-account-filter-outline</v-icon>
           </v-tab>
-          <v-tab to="/Employee">
+          <v-tab to="/Employee" style="text-transform: none;">
             Nhân viên
             <v-icon color="green">mdi-account-multiple</v-icon>
           </v-tab>
-          <v-tab>
-            Tính tỷ giá xuất quỹ
+          <v-tab  style="text-transform: none;">
+            Hệ thống tài khoản
             <v-icon color="green">mdi-alarm-panel-outline</v-icon>
           </v-tab>
         </v-tabs>
