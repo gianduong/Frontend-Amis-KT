@@ -121,6 +121,9 @@ tr:hover td {
 .m-180 {
   min-width: 180px;
 }
+.m-200{
+  min-width: 200px;
+}
 .m-120 {
   min-width: 120px;
 }

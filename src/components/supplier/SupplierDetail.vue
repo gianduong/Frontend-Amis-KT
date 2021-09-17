@@ -87,6 +87,7 @@
               <div class="attr-ma">
                 <div class="resize resize-left">
                   <InputField
+                    class="h-32"
                     :label="'Mã số thuế'"
                     v-model="employee.employeeCode"
                     :errorNotify="errorNotifyCode"
@@ -94,9 +95,10 @@
                   />
                 </div>
               </div>
-              <div class="attr-ten" style="width: 262px">
+              <div class="attr-ten" style="width: 250px">
                 <div class="resize resize-right">
                   <InputField
+                    class="h-32"
                     :label="'Mã nhà cung cấp'"
                     :required="true"
                     v-model="employee.fullName"
@@ -108,6 +110,7 @@
             <div class="left-2">
               <div class="resize resize-left">
                 <InputField
+                  class="h-23 mrg-2"
                   :label="'Tên nhà cung cấp'"
                   :required="true"
                   v-model="employee.fullName"
@@ -117,8 +120,13 @@
             </div>
             <div class="left-3">
               <div class="resize resize-left">
-                <label>Địa chỉ</label>
-                <v-textarea outlined no-resize auto-grow></v-textarea>
+                <TextAreaField
+                  class="h-32"
+                  :label="'Địa chỉ'"
+                  :placeholder="'VD: Số 82, Duy Tân, Dịch Vọng, Cầu Dấy, Hà Nội'"
+                  v-model="employee.dateOfBirth"
+                  :errorNotify="errorNotifyDob"
+                />
               </div>
             </div>
           </div>
@@ -127,6 +135,7 @@
               <div class="attr-phone">
                 <div class="resize">
                   <InputField
+                    class="h-32"
                     :label="'Điện thoại'"
                     v-model="employee.dateOfBirth"
                     :errorNotify="errorNotifyDob"
@@ -134,8 +143,9 @@
                 </div>
               </div>
               <div class="attr-website">
-                <div class="resize resize-right">
+                <div class="resize" style="margin-top: 10px">
                   <InputField
+                    class="h-32"
                     :label="'Website'"
                     v-model="employee.fullName"
                     :errorNotify="errorNotifyFullName"
@@ -144,6 +154,10 @@
               </div>
             </div>
             <div class="right-2">
+              <div class="mi-32 ic-plus-position-1">
+                <div class="mi-24 mi-plus--success"></div>
+              </div>
+
               <div class="resize">
                 <label>Nhóm nhà cung cấp</label>
                 <v-autocomplete
@@ -160,6 +174,9 @@
               </div>
             </div>
             <div class="right-3">
+              <div class="mi-32 ic-plus-position-2">
+                <div class="mi-24 mi-plus--success"></div>
+              </div>
               <div class="resize">
                 <label>Nhân viên mua hàng</label>
                 <v-autocomplete
@@ -180,40 +197,65 @@
         <div class="attribute-bottom">
           <div class="bottom-1">
             <v-tabs
-              height="30px"
+              height="25px"
               background-color="#fff"
               color="green"
               style="margin-left: 30px"
             >
               <v-tab
-                style="text-transform: none; font-size: 12px; color:#111; border:1.5px solid #C9CCD2;"
+                style="
+                  text-transform: none;
+                  font-size: 12px;
+                  color: #111;
+                  border: 1.5px solid #c9ccd2;
+                "
                 @click="tab = '1'"
                 >Liên hệ</v-tab
               >
               <v-tab
-                style="text-transform: none; font-size: 12px;color:#111; border:1.5px solid #C9CCD2;"
+                style="
+                  text-transform: none;
+                  font-size: 12px;
+                  color: #111;
+                  border: 1.5px solid #c9ccd2;
+                "
                 @click="tab = '2'"
                 >Điều khoản thanh toán</v-tab
               >
               <v-tab
-                style="text-transform: none; font-size: 12px;color:#111; border:1.5px solid #C9CCD2;"
+                style="
+                  text-transform: none;
+                  font-size: 12px;
+                  color: #111;
+                  border: 1.5px solid #c9ccd2;
+                "
                 @click="tab = '3'"
                 >Tài khoản ngân hàng</v-tab
               >
               <v-tab
-                style="text-transform: none; font-size: 12px;color:#111; border:1.5px solid #C9CCD2;"
+                style="
+                  text-transform: none;
+                  font-size: 12px;
+                  color: #111;
+                  border: 1.5px solid #c9ccd2;
+                "
                 @click="tab = '4'"
                 >Địa chỉ khác</v-tab
               >
               <v-tab
-                style="text-transform: none; font-size: 12px;color:#111; border:1.5px solid #C9CCD2;"
+                style="
+                  text-transform: none;
+                  font-size: 12px;
+                  color: #111;
+                  border: 1.5px solid #c9ccd2;
+                "
                 @click="tab = '5'"
-                >Ngân hàng</v-tab
+                >Ghi chú</v-tab
               >
             </v-tabs>
             <v-tabs-items v-model="tab">
               <v-tab-item value="1">
-                <v-card height="180px">
+                <v-card height="200px">
                   <div class="bottom-2">
                     <div class="bottom-left">
                       <h1 class="bottom-h1">Người liên hệ</h1>
@@ -222,6 +264,104 @@
                           class="attr-xungho"
                           style="width: 30%; margin-right: 10px"
                         >
+                          <v-autocomplete
+                            solo
+                            placeholder="Xưng hô"
+                            color="green"
+                            v-model="employee.deparmentId"
+                            :items="listDepartment"
+                            item-text="deparmentName"
+                            item-value="deparmentId"
+                            no-data-text="Không có dữ liệu"
+                            :error="errorNotifyDepartment.status"
+                            :error-messages="errorNotifyDepartment.errorMessage"
+                          ></v-autocomplete>
+                        </div>
+                        <div class="attr-ma" style="width: 260px">
+                          <InputField
+                            :placeholder="'Họ và tên'"
+                            class="h-32"
+                            :errorNotify="errorNotifyCode"
+                            ref="toFocus"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="attr-ten"
+                        style="width: 390px; margin-bottom: 10px"
+                      >
+                        <InputField
+                          class="h-32"
+                          :placeholder="'Email'"
+                          v-model="employee.fullName"
+                          :errorNotify="errorNotifyFullName"
+                        />
+                      </div>
+                      <div class="attr-ten" style="width: 195px">
+                        <InputField
+                          class="h-32"
+                          :placeholder="'Số điện thoại'"
+                          v-model="employee.fullName"
+                          :errorNotify="errorNotifyFullName"
+                        />
+                      </div>
+                    </div>
+                    <div class="bottom-right">
+                      <h1 class="bottom-h1">Đại diện theo PL</h1>
+                      <div class="attr-ten" style="width: 390px">
+                        <InputField
+                          class="h-32"
+                          v-model="employee.fullName"
+                          :errorNotify="errorNotifyFullName"
+                        />
+                      </div>
+                      <!-- <h1 class="bottom-h1">Người nhận Hóa đơn điện tử</h1>
+                      <div class="attr-ten" style="width: 90%">
+                        <InputField
+                          class="h-32"
+                          v-model="employee.fullName"
+                          :errorNotify="errorNotifyFullName"
+                        />
+                      </div>
+                      <div class="attr-ten" style="width: 90%">
+                        <InputField
+                          class="h-32"
+                          v-model="employee.fullName"
+                          :errorNotify="errorNotifyFullName"
+                        />
+                      </div>
+                      <div class="attr-ten" style="width: 45%">
+                        <InputField
+                          class="h-32"
+                          v-model="employee.fullName"
+                          :errorNotify="errorNotifyFullName"
+                        />
+                      </div> -->
+                    </div>
+                  </div>
+                </v-card>
+              </v-tab-item>
+              <v-tab-item value="2">
+                <v-card height="200px">
+                  <div class="bottom-2">
+                    <div class="bottom-slide-2">
+                      <div class="bottom-2-top">
+                        <div
+                          class="attr-e"
+                          style="width: 30%; margin-right: 10px"
+                        >
+                          <div class="mi-32 ic-plus-position-3">
+                            <div class="mi-24 mi-plus--success"></div>
+                          </div>
+                          <span
+                            style="
+                              display: block;
+                              font-size: 12px;
+                              font-weight: 700;
+                              margin-bottom: 4px;
+                            "
+                            >Điều khoản thanh toán</span
+                          >
                           <v-autocomplete
                             solo
                             color="green"
@@ -234,72 +374,9 @@
                             :error-messages="errorNotifyDepartment.errorMessage"
                           ></v-autocomplete>
                         </div>
-                        <div class="attr-ma" style="width: 60%">
-                          <InputField
-                            v-model="employee.employeeCode"
-                            :errorNotify="errorNotifyCode"
-                            ref="toFocus"
-                          />
-                        </div>
-                      </div>
-                      <div class="attr-ten" style="width: 262px">
-                        <InputField
-                          v-model="employee.fullName"
-                          :errorNotify="errorNotifyFullName"
-                        />
-                      </div>
-                      <div class="attr-ten" style="width: 262px">
-                        <InputField
-                          v-model="employee.fullName"
-                          :errorNotify="errorNotifyFullName"
-                        />
-                      </div>
-                      <h1 class="bottom-h1">Đại diện theo PL</h1>
-                      <div class="attr-ten" style="width: 262px">
-                        <InputField
-                          v-model="employee.fullName"
-                          :errorNotify="errorNotifyFullName"
-                        />
-                      </div>
-                    </div>
-                    <div class="bottom-right">
-                      <h1 class="bottom-h1">Người nhận Hóa đơn điện tử</h1>
-                      <div class="attr-ten" style="width: 90%">
-                        <InputField
-                          v-model="employee.fullName"
-                          :errorNotify="errorNotifyFullName"
-                        />
-                      </div>
-                      <div class="attr-ten" style="width: 90%">
-                        <InputField
-                          v-model="employee.fullName"
-                          :errorNotify="errorNotifyFullName"
-                        />
-                      </div>
-                      <div class="attr-ten" style="width: 45%">
-                        <InputField
-                          v-model="employee.fullName"
-                          :errorNotify="errorNotifyFullName"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </v-card>
-              </v-tab-item>
-              <v-tab-item value="2">
-                <v-card height="180px">
-                  <div class="bottom-2">
-                    <div class="bottom-slide-2">
-                      <div class="bottom-2-top">
                         <div class="attr-e">
                           <InputField
-                            :label="'Điều khoản thanh toán'"
-                            v-model="employee.dateOfBirth"
-                            :errorNotify="errorNotifyDob"
-                          />
-                        </div>
-                        <div class="attr-e">
-                          <InputField
+                            class="h-32"
                             :label="'số ngày được nợ'"
                             v-model="employee.dateOfBirth"
                             :errorNotify="errorNotifyDob"
@@ -307,6 +384,7 @@
                         </div>
                         <div class="attr-e">
                           <InputField
+                            class="h-32"
                             :label="'Số nợ tối đa'"
                             v-model="employee.dateOfBirth"
                             :errorNotify="errorNotifyDob"
@@ -314,7 +392,7 @@
                         </div>
                       </div>
                       <div class="bottom-2-bot">
-                        <label>Tài khoản công nợ phải thu</label>
+                        <label>Tài khoản công nợ phải trả</label>
                         <div
                           class="attr-x"
                           style="width: 30%; margin-right: 10px"
@@ -337,34 +415,222 @@
                 </v-card>
               </v-tab-item>
               <v-tab-item value="3">
-                <v-card height="180px">
+                <v-card height="200px">
                   <div class="bottom-2">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th class="m-20">
-                            Số tài khoản
-                            <div class="line"></div>
-                          </th>
-                          <th class="m-27">
-                            Tên ngân hàng
-                            <div class="line"></div>
-                          </th>
-                          <th class="m-20">
-                            Chi nhánh
-                            <div class="line"></div>
-                          </th>
-                          <th class="m-27">
-                            Tỉnh/Thành phố của ngân hàng
-                            <div class="line"></div>
-                          </th>
-                          <th class="th-sticky m-6">
-                            <div class="border-left"></div>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody></tbody>
-                    </table>
+                    <div class="slide-3">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th class="m-20">
+                              Số tài khoản
+                              <div class="line"></div>
+                            </th>
+                            <th class="m-27">
+                              Tên ngân hàng
+                              <div class="line"></div>
+                            </th>
+                            <th class="m-20">
+                              Chi nhánh
+                              <div class="line"></div>
+                            </th>
+                            <th class="m-27">
+                              Tỉnh/Thành phố của ngân hàng
+                              <div class="line"></div>
+                            </th>
+                            <th
+                              class="th-sticky m-6"
+                              style="border-right: 1px solid #c7c7c7"
+                            >
+                              <div class="border-left"></div>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody style="background: #eceef1">
+                          <tr>
+                            <td>
+                              <InputField
+                                style="background: #fff"
+                                class="h-32"
+                                v-model="employee.dateOfBirth"
+                                :errorNotify="errorNotifyDob"
+                              />
+                            </td>
+                            <td>
+                              <InputField
+                                style="background: #fff"
+                                class="h-32"
+                                v-model="employee.dateOfBirth"
+                                :errorNotify="errorNotifyDob"
+                              />
+                            </td>
+
+                            <td>
+                              <InputField
+                                style="background: #fff"
+                                class="h-32"
+                                v-model="employee.dateOfBirth"
+                                :errorNotify="errorNotifyDob"
+                              />
+                            </td>
+                            <td>
+                              <InputField
+                                style="background: #fff"
+                                class="h-32"
+                                v-model="employee.dateOfBirth"
+                                :errorNotify="errorNotifyDob"
+                              />
+                            </td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div class="slide-3-btn">
+                        <v-btn
+                          color="#fff"
+                          width="100px"
+                          small
+                          style="
+                            margin-right: 10px;
+                            border: 1px solid #8d9096;
+                            text-transform: none;
+                          "
+                          >Thêm dòng</v-btn
+                        >
+                        <v-btn
+                          color="#fff"
+                          small
+                          style="
+                            border: 1px solid #8d9096;
+                            text-transform: none;
+                          "
+                          >Xóa hết dòng</v-btn
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </v-card>
+              </v-tab-item>
+              <v-tab-item value="4">
+                <v-card height="200px">
+                  <div class="bottom-2">
+                    <div class="bottom-left">
+                      <h1 class="bottom-h1">Vị trí địa lý</h1>
+                      <div class="bottom-left-1">
+                        <div
+                          class="attr-xungho"
+                          style="width: 46%; margin-right: 9px"
+                        >
+                          <v-autocomplete
+                            solo
+                            placeholder="Quốc gia"
+                            color="green"
+                            v-model="employee.deparmentId"
+                            :items="listDepartment"
+                            item-text="deparmentName"
+                            item-value="deparmentId"
+                            no-data-text="Không có dữ liệu"
+                            :error="errorNotifyDepartment.status"
+                            :error-messages="errorNotifyDepartment.errorMessage"
+                          ></v-autocomplete>
+                        </div>
+                        <div class="attr-ma" style="width: 47%">
+                          <v-autocomplete
+                            solo
+                            placeholder="Tỉnh/Thành phố"
+                            color="green"
+                            v-model="employee.deparmentId"
+                            :items="listDepartment"
+                            item-text="deparmentName"
+                            item-value="deparmentId"
+                            no-data-text="Không có dữ liệu"
+                            :error="errorNotifyDepartment.status"
+                            :error-messages="errorNotifyDepartment.errorMessage"
+                          ></v-autocomplete>
+                        </div>
+                      </div>
+                      <div class="bottom-left-1">
+                        <div
+                          class="attr-xungho"
+                          style="width: 46%; margin-right: 9px"
+                        >
+                          <v-autocomplete
+                            solo
+                            placeholder="Quận/Huyện"
+                            color="green"
+                            v-model="employee.deparmentId"
+                            :items="listDepartment"
+                            item-text="deparmentName"
+                            item-value="deparmentId"
+                            no-data-text="Không có dữ liệu"
+                            :error="errorNotifyDepartment.status"
+                            :error-messages="errorNotifyDepartment.errorMessage"
+                          ></v-autocomplete>
+                        </div>
+                        <div class="attr-ma" style="width: 47%">
+                          <v-autocomplete
+                            solo
+                            placeholder="Xã/Phường"
+                            color="green"
+                            v-model="employee.deparmentId"
+                            :items="listDepartment"
+                            item-text="deparmentName"
+                            item-value="deparmentId"
+                            no-data-text="Không có dữ liệu"
+                            :error="errorNotifyDepartment.status"
+                            :error-messages="errorNotifyDepartment.errorMessage"
+                          ></v-autocomplete>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="bottom-right">
+                      <div class="bottom-right-1">
+                        <h1 class="bottom-h1">Địa chỉ giao hàng</h1>
+                        <CheckboxField
+                          :isCheck="isCheckBox"
+                          v-on:click="handleCheckBox"
+                          :content="'Giống địa chỉ nhà cung cấp'"
+                          style="margin-right: 20px"
+                        />
+                      </div>
+                      <div class="attr-ten" style="width: 390px">
+                        <v-btn
+                          color="#fff"
+                          width="100px"
+                          small
+                          style="
+                            margin-right: 10px;
+                            border: 1px solid #8d9096;
+                            text-transform: none;
+                          "
+                          >Thêm dòng</v-btn
+                        >
+                        <v-btn
+                          color="#fff"
+                          small
+                          style="
+                            border: 1px solid #8d9096;
+                            text-transform: none;
+                          "
+                          >Xóa hết dòng</v-btn
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </v-card>
+              </v-tab-item>
+              <v-tab-item value="5">
+                <v-card height="200px">
+                  <div class="bottom-2">
+                    <div class="border-textarea">
+                      <TextAreaField
+                        style="margin-top: -4px"
+                        class="h-32"
+                        v-model="employee.dateOfBirth"
+                        :errorNotify="errorNotifyDob"
+                        :cols="114"
+                        :rows="9"
+                      />
+                    </div>
                   </div>
                 </v-card>
               </v-tab-item>
@@ -413,6 +679,7 @@
 import Combobox from "../commons/Combobox.vue";
 import Button from "../commons/Button.vue";
 import InputField from "../commons/InputField.vue";
+import TextAreaField from "../commons/TextAreaField.vue";
 import CheckboxField from "../commons/CheckboxField.vue";
 import DefaultEmployee from "../constant/DefaultEmployee";
 import DialogNotify from "../commons/DialogNotify.vue";
@@ -425,6 +692,7 @@ export default {
   components: {
     Button,
     InputField,
+    TextAreaField,
     CheckboxField,
     DialogNotify,
     Combobox,
@@ -1133,7 +1401,7 @@ $color-title: #111;
               @include widthHeight(40%, 100%);
             }
             .attr-website {
-              @include widthHeight(53%, 100%);
+              @include widthHeight(56%, 100%);
             }
           }
           .right-2 {
@@ -1168,21 +1436,35 @@ $color-title: #111;
 
           .bottom-left {
             @include widthHeight(50%, 100%);
+            margin: 20px 0 0 10px;
             .bottom-left-1 {
               @include flex;
+              margin-bottom: 10px;
             }
           }
           .bottom-right {
             @include widthHeight(50%, 100%);
+            margin: 20px 0 0 10px;
+
+            .bottom-right-1 {
+              @include flex;
+              width: 96%;
+              height: 30px;
+              border-bottom: 1px solid #babec5;
+              margin-bottom: 10px;
+              h1 {
+                margin-right: 20px;
+              }
+            }
           }
           .bottom-slide-2 {
             display: flex;
             flex-direction: column;
-
+            margin: -60px 0 0 10px;
             .bottom-2-top {
               display: flex;
               height: 30px;
-
+              position: relative;
               .attr-e {
                 margin-right: 10px;
               }
@@ -1191,14 +1473,33 @@ $color-title: #111;
               margin-top: 30px;
             }
           }
+          .slide-3 {
+            margin: -40px 10px 0 10px;
+            .table {
+              tr:hover {
+                background: #f3f8f8;
+              }
+            }
+            .slide-3-btn {
+              margin-top: 10px;
+            }
+          }
+          .border-textarea {
+            margin-left: 10px;
+            margin-top: 0px;
+            width: 98%;
+            height: 94%;
+            border: 1px solid #6ce85b;
+          }
         }
       }
     }
     .container-bottom {
-      @include widthHeight(95%, 15%);
+      @include widthHeight(94%, 10%);
       display: flex;
       justify-content: space-between;
       margin-left: 2.5%;
+      margin-top: 1%;
       border-top: 1px solid #e0e0e0;
 
       .btn-close {
@@ -1235,7 +1536,20 @@ $color-title: #111;
 }
 
 .resize-right {
-  margin: 10px 20px 0 20px;
+  margin: 8px 20px 0 30px;
+}
+
+/** tab */
+.tab-item {
+  text-transform: none;
+  font-size: 12px;
+  color: #111;
+  border: 1.5px solid #c9ccd2;
+}
+
+.v-tab {
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 // ---------radio----------
@@ -1251,5 +1565,82 @@ $color-title: #111;
 
 .text-field {
   margin-top: -12px;
+}
+
+.h-32 {
+  height: 32px;
+}
+
+.mrg-2 {
+  margin-top: -2px;
+}
+
+/** icon */
+.mi-plus--success {
+  background: url("../../assets/icon/ic_Plus.svg") no-repeat;
+  margin-top: 4.5px;
+}
+
+.ic-plus-position-1:hover {
+  background-color: #e0e0e0;
+}
+
+.ic-plus-position-1 {
+  cursor: pointer;
+  position: absolute;
+  top: 174.5px;
+  right: 73px;
+  z-index: 1;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: center;
+}
+.ic-plus-position-2:hover {
+  background-color: #e0e0e0;
+}
+
+.ic-plus-position-2 {
+  cursor: pointer;
+  position: absolute;
+  top: 252.5px;
+  right: 73px;
+  z-index: 1;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: center;
+}
+
+.ic-plus-position-3:hover {
+  background-color: #e0e0e0;
+}
+
+.ic-plus-position-3 {
+  cursor: pointer;
+  position: absolute;
+  top: 21px;
+  left: 126px;
+  z-index: 1;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: center;
+}
+
+.mi-32 {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+}
+
+.mi-24 {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+}
+
+.mi {
+  background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat;
+  cursor: pointer;
 }
 </style>

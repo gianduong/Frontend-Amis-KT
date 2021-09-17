@@ -15,8 +15,8 @@
           required && errorNotify.status ? 'errortext' : '',
           type == 'date' && value ? 'active' : null,
         ]"
-        rows="4"
-        cols="50"
+        :rows="rows ? rows : '2'"
+        :cols="cols ? cols : '50'"
       >
       </textarea>
       <div v-if="searchField" class="search-icon"></div>
@@ -38,6 +38,8 @@ export default {
     "value",
     "required",
     "errorNotify",
+    "rows",
+    "cols",
   ],
   // end region
 
@@ -113,7 +115,7 @@ export default {
       height: 100%;
       /* max-height: 32px; */
       &:focus {
-        border-color: #2ca01c;
+        border-bottom-color: #2ca01c;
       }
     }
 
@@ -152,5 +154,8 @@ export default {
     color: #000;
     resize: none;
   }
+}
+::placeholder{
+  text-transform: none;
 }
 </style>

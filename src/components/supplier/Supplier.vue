@@ -9,15 +9,27 @@
       <!-- Dialog add  -->
       <!--  -->
       <div class="title-option">
-        <div class="mi-tour mi mi-24" style="border: 1px solid black"></div>
+        <img
+          src="../../assets/img/batluc.png"
+          style="
+            width=: 24px;
+            height: 24px;
+            position: absolute;
+            right: 345px;
+            top: 40px;
+          "
+        />
         <router-link
           class="link-huong-dan"
           to="/CA/CAProcess"
-          style="margin: 10px 20px 0 20px"
+          style="margin: 10px 10px 0 20px"
         >
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
-              <span v-bind="attrs" v-on="on" style="z-index: 1999"
+              <span
+                v-bind="attrs"
+                v-on="on"
+                style="z-index: 1999; font-size: 13px"
                 >Hướng dẫn</span
               >
             </template>
@@ -31,24 +43,57 @@
               v-bind="attrs"
               v-on="on"
               rounded
-              color="#ffffff"
+              color="#F4F5F8"
               style="border: 1px solid black; text-transform: none; color: #111"
             >
               Tiện ích
               <div class="mi-arrow-up--black mi mi-16"></div>
             </v-btn>
           </template>
-          <v-card height="40px" width="260px">
-            <v-btn width="100%" height="100%" @click="dialogSuppliers = true">
+          <v-card height="30px" width="200px">
+            <v-btn
+              width="100%"
+              height="100%"
+              @click="dialogSuppliers = true"
+              style="text-transform: none"
+            >
               Gộp nhà cung cấp tự động
             </v-btn>
           </v-card>
         </v-menu>
       </div>
       <v-dialog v-model="dialogSuppliers" width="500px">
-        <v-card width="500px" height="500px">
-          <h1>Gộp nhà cung cấp tự động</h1>
-          
+        <v-card width="500px" height="340px">
+          <div class="modal-close">
+            <div class="modal-icon help-icon"></div>
+            <div
+              class="modal-icon close-icon"
+              @click="dialogSuppliers = false"
+            ></div>
+          </div>
+          <div class="dl">Gộp nhà cung cấp tự động</div>
+          <div class="note">
+            Chọn thông tin bạn muốn sử dụng để xác định nhà cung cấp trùng nhau
+          </div>
+          <div class="supplier-opton">
+            <div class="supplier-option-item">
+              <CheckboxField :isCheck="true" />&emsp; Tên nhà cung cấp
+            </div>
+            <div class="supplier-option-item">
+              <CheckboxField :isCheck="true" />&emsp; Mã số thuế
+            </div>
+            <div class="supplier-option-item">
+              <CheckboxField :isCheck="true" />&emsp; Số điện thoại
+            </div>
+            <div class="supplier-option-item">
+              <CheckboxField :isCheck="true" />&emsp; Địa chỉ
+            </div>
+          </div>
+          <div class="line-border">
+            <Button :content="'Hủy'" :btnWhite="true" tabindex="0" />
+
+            <Button :content="'Lấy nhà cung cấp'" tabindex="0" />
+          </div>
         </v-card>
       </v-dialog>
       <div class="dialog-add-update">
@@ -59,11 +104,21 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <div class="btn-add" v-bind="attrs" v-on="on">
-              <Button content="Thêm" v-bind="attrs" v-on="on" />
+              <!-- <Button content="Thêm" v-bind="attrs" v-on="on" /> -->
+              <v-btn
+                style="border-radius: 30px 0 0 30px; margin-left: 10px"
+                color="#2CA01C"
+                v-bind="attrs"
+                v-on="on"
+                ><span style="color: #fff; text-transform: none"
+                  >Thêm</span
+                ></v-btn
+              >
             </div>
+            <div class="btn-middle-line"></div>
           </template>
 
-          <v-card height="620px" @keydown.esc="closeDialog">
+          <v-card height="650px" @keydown.esc="closeDialog">
             <SupplierDetail
               :employeeDetail="employeeDetail"
               @handleCloseDialog="closeDialog"
@@ -75,6 +130,237 @@
               :listDepartment="listDepartment"
               @onNotify="handleNotify"
             />
+          </v-card>
+        </v-dialog>
+
+        <v-menu v-model="menuExcel" bottom offset-y left>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              style="border-radius: 0 30px 30px 0"
+              min-width="30px"
+              color="#2CA01C"
+              ><div class="mi-arrow-up--white mi mi-16"></div
+            ></v-btn>
+          </template>
+          <v-card height="30px" width="119px">
+            <v-btn
+              width="100%"
+              height="100%"
+              @click="dialogExcel = true"
+              style="text-transform: none"
+            >
+              Nhập từ Excel
+            </v-btn>
+          </v-card>
+        </v-menu>
+        <v-dialog
+          style="background: #f4f5f8"
+          class="DialogImportExcel"
+          v-model="dialogExcel"
+          fullscreen
+          hide-overlay
+          transition="dialog-bottom-transition"
+        >
+          <v-card color="#F4F5F8">
+            <v-toolbar color="#F4F5F8">
+              <v-toolbar-title class="excel-title"
+                >Nhập nhà cung cấp từ Excel</v-toolbar-title
+              >
+              <v-spacer></v-spacer>
+              <div class="modal-close" style="margin: 10px 10px 0 0">
+                <div class="modal-icon help-icon"></div>
+                <div
+                  class="modal-icon close-icon"
+                  @click="dialogExcel = false"
+                ></div>
+              </div>
+            </v-toolbar>
+            <v-divider></v-divider>
+            <v-stepper v-model="e1" alt-labels color="#F4F5F8">
+              <v-stepper-header style="background: #f4f5f8">
+                <v-stepper-step :complete="e1 > 1" step="1" color="#2CA01C">
+                  CHỌN TỆP NGUỒN
+                </v-stepper-step>
+
+                <v-divider></v-divider>
+
+                <v-stepper-step :complete="e1 > 2" step="2" color="#2CA01C">
+                  GHÉP DỮ LIỆU
+                </v-stepper-step>
+
+                <v-divider></v-divider>
+
+                <v-stepper-step step="3" color="#2CA01C">
+                  KIỂM TRA DỮ LIỆU
+                </v-stepper-step>
+                <v-divider></v-divider>
+
+                <v-stepper-step step="4" color="#2CA01C">
+                  KẾT QUẢ
+                </v-stepper-step>
+              </v-stepper-header>
+
+              <v-stepper-items>
+                <v-stepper-content step="1" style="background: #f4f5f8">
+                  <v-card width="100%" color="#F4F5F8" height="626px">
+                    <div class="selected-file">
+                      <div class="mi mi-attach mi-16"></div>
+                      <span class="span-select">chọn tệp Excel</span>
+                      <span class="span-size">Dung lượng tối đa: 20MB</span>
+                    </div>
+                    <div class="input-file">
+                      <input type="file" id="files" class="hidden" />
+                      <label class="file-place" for="files"
+                        >Kéo thả tệp vào đây hoặc bấm vào đây</label
+                      >
+                    </div>
+                    <div class="down-filebase">
+                      <span class="span-down">Tải tệp mẫu cơ bản</span>
+                      <div
+                        class="mi-download mi mi-16"
+                        style="margin-right: 10px"
+                      ></div>
+                      <span class="span-down">Tải tệp mẫu đầy đủ</span>
+                      <div class="mi-download mi mi-16"></div>
+                    </div>
+                    <div class="file-info">
+                      <div>
+                        <label>Sheet chứa dữ liệu</label>
+                        <v-autocomplete
+                          solo
+                          v-model="options.value"
+                          :items="options"
+                          item-text="name"
+                          item-value="value"
+                          no-data-text="Không có dữ liệu"
+                        ></v-autocomplete>
+                      </div>
+                      <div>
+                        <label>Bảng tiêu đề là dòng số</label>
+                        <InputField style="background: #fff" />
+                      </div>
+                    </div>
+                    <div class="file-option">
+                      <span>Phương thức nhập</span>
+                      <v-radio-group v-model="isAddExcel">
+                        <div class="option-radio" style="margin: 0px 0 0 15px">
+                          <v-radio
+                            :value="1"
+                            label="Thêm mới"
+                            color="#2ca01c"
+                          ></v-radio>
+                          <div class="spacer-midle"></div>
+                          <v-radio
+                            :value="2"
+                            label="Cập nhật"
+                            color="#2ca01c"
+                          ></v-radio>
+                        </div>
+                      </v-radio-group>
+                    </div>
+                  </v-card>
+                  <div class="btn-position">
+                    <v-btn
+                      color="#38393D"
+                      @click="dialogExcel = false"
+                      class="btn-close-position"
+                      style="border: 1px solid #f4f5f8"
+                    >
+                      Hủy
+                    </v-btn>
+                    <v-btn
+                      color="#2CA01C"
+                      @click="e1 = 2"
+                      style="margin-right: 20px"
+                    >
+                      Tiếp tục
+                    </v-btn>
+                  </div>
+                  <div data-v-5d5c961c="" class="suggestion flex">
+                    <div data-v-5d5c961c="" class="inner-suggestion">
+                      <div data-v-5d5c961c="" class="flex items-center">
+                        <div data-v-5d5c961c="" class="suggestion-icon"></div>
+                        <div data-v-5d5c961c="" class="label suggestion-label">
+                          Gợi ý
+                        </div>
+                      </div>
+                      <div
+                        data-v-5d5c961c=""
+                        class="suggestion-content download-template"
+                      >
+                        <ul data-v-5d5c961c="" class="suggest-list">
+                          <li data-v-5d5c961c="">
+                            <!---->
+                            <div data-v-5d5c961c="">
+                              <a
+                                data-v-5d5c961c=""
+                                href="https://actapp.misa.vn/g2/api/file/v1/file?type=16&amp;file=Mau_danh_muc_nha_cung_cap.xls&amp;dbid=129712a1-347d-4a8c-ad6d-0be77b6fc77e&amp;height=-1&amp;width=-1"
+                                ><span data-v-5d5c961c="" class="download"
+                                  >Tải tệp mẫu cơ bản</span
+                                ></a
+                              >
+                              để nhập những thông tin cơ bản.
+                            </div>
+                          </li>
+                          <li data-v-5d5c961c="">
+                            <a
+                              data-v-5d5c961c=""
+                              href="https://actapp.misa.vn/g2/api/file/v1/file?type=16&amp;file=Mau_danh_muc_nha_cung_cap_full.xls&amp;dbid=129712a1-347d-4a8c-ad6d-0be77b6fc77e&amp;height=-1&amp;width=-1"
+                              ><span data-v-5d5c961c="" class="download"
+                                >Tải tệp mẫu đầy đủ</span
+                              ></a
+                            >
+                            để nhập tất cả các thông tin.
+                          </li>
+                          <li data-v-5d5c961c="">
+                            Các thiết lập trong quá trình nhập sẽ được lưu để sử
+                            dụng trong các lần tiếp sau.
+                          </li>
+                          <li data-v-5d5c961c="">
+                            <b data-v-5d5c961c="">Thêm mới:</b> Dữ liệu trên tệp
+                            mà chưa có trong hệ thống sẽ được thêm mới vào. Dữ
+                            liệu mà đã có trên hệ thống sẽ không được cập nhật
+                            vào.
+                          </li>
+                          <li data-v-5d5c961c="">
+                            <b data-v-5d5c961c="">Cập nhật:</b> Dữ liệu trên tệp
+                            mà chưa có trong hệ thống sẽ được thêm mới vào. Dữ
+                            liệu mà đã có trên hệ thống sẽ được cập nhật vào.
+                          </li>
+                          <!---->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </v-stepper-content>
+
+                <v-stepper-content step="2">
+                  <v-card
+                    class="mb-12"
+                    color="grey lighten-1"
+                    height="200px"
+                  ></v-card>
+
+                  <v-btn color="primary" @click="e1 = 3"> Continue </v-btn>
+
+                  <v-btn text> Cancel </v-btn>
+                </v-stepper-content>
+
+                <v-stepper-content step="3">
+                  <v-card
+                    class="mb-12"
+                    color="grey lighten-1"
+                    height="200px"
+                  ></v-card>
+
+                  <v-btn color="primary" @click="e1 = 1"> Continue </v-btn>
+
+                  <v-btn text> Cancel </v-btn>
+                </v-stepper-content>
+              </v-stepper-items>
+            </v-stepper>
           </v-card>
         </v-dialog>
       </div>
@@ -391,7 +677,7 @@
                 Tên nhà cung cấp
                 <div class="line"></div>
               </th>
-              <th class="m-180">
+              <th class="m-250">
                 Địa chỉ
                 <div class="line"></div>
               </th>
@@ -407,7 +693,7 @@
                 Số CMND
                 <div class="line"></div>
               </th>
-              <th class="th-sticky m-250">
+              <th class="th-sticky m-200">
                 <div class="border-left"></div>
                 Chức năng
               </th>
@@ -464,10 +750,8 @@
           <v-pagination
             v-model="pageInt"
             :length="totalPage"
-            color="green"
-            total-visible="5"
+            color="#fff"
           ></v-pagination>
-
           <button
             class="pagination-next-btn"
             :class="[pageInt < totalPage ? 'active' : null]"
@@ -521,10 +805,11 @@ export default {
   //#region Data
   data() {
     return {
-      dialog: false,
-      dialog2: false,
-      dialog3: false,
+      e1: 1,
+      isAddExcel: true, // trạng thái khi import excel
       dialogSuppliers: false,
+      dialogExcel: false, // giao diện thực hiện import excel
+      menuExcel: false, // Menu excel
       menu: false, // menu lọc
       menuUtilities: false, // Menu tiện ích
       isTabSortHidden: false, // kiểm tra tab sort
@@ -916,7 +1201,6 @@ $color-active: #111;
 }
 
 /**---------------------------------------------------------------------------- */
-
 /**-----------------loading------------------ */
 .loading {
   background-image: url("../../assets/load-data.gif");
@@ -946,8 +1230,22 @@ $color-active: #111;
 
     .title-option {
       @include flex;
-      width: 76%;
+      width: 73%;
       justify-content: flex-end;
+    }
+
+    .dialog-add-update {
+      @include flex;
+
+      .btn-middle-line {
+        z-index: 10;
+        position: absolute;
+        right: 66px;
+        height: 20px;
+        width: 1px;
+        border: 1px solid transparent;
+        border-left-color: #fff;
+      }
     }
 
     .link-huong-dan {
@@ -971,7 +1269,6 @@ $color-active: #111;
     position: relative;
     top: -12px;
     right: -1536px;
-    z-index: 10000;
   }
 
   .box-rotate {
@@ -1110,7 +1407,7 @@ $color-active: #111;
 }
 /** icon */
 .mi-tour {
-  background-position: -984px -145px;
+  background-position: 984px -145px;
 }
 .mi-24 {
   width: 24px;
@@ -1143,6 +1440,17 @@ $color-active: #111;
 .mi-chevron-down--primary {
   background-position: -176px -360px;
 }
+.mi-category {
+  background-position: -568px -76px;
+}
+
+.mi-attach {
+  background-position: -539px -203px;
+}
+
+.mi-download {
+  background-position: -705px -358px;
+}
 
 .funnel-icon {
   height: 22px;
@@ -1160,7 +1468,9 @@ $color-active: #111;
   right: -360px;
   top: 5px;
 }
-
+.mi-arrow-up--white {
+  background-position: -848px -359px;
+}
 /** tab */
 .tab-sort {
   display: flex;
@@ -1225,11 +1535,10 @@ $color-active: #111;
 }
 
 .modal-close {
-  padding-left: 12px;
-  margin-right: 10px;
   @include flex;
   position: absolute;
   right: 10px;
+  top: 10px;
   .modal-icon {
     @include widthHeight(24px, 24px);
     cursor: pointer;
@@ -1259,7 +1568,49 @@ $color-active: #111;
 .size-100 {
   width: 100%;
 }
+/** supplier option */
+.dl {
+  font-size: 24px;
+  font-weight: 600;
+  color: #212121;
+  width: 400px;
+  position: absolute;
+  top: 20px;
+  left: 30px;
+}
 
+.note {
+  font-weight: 700;
+  margin: 10px 0;
+  position: absolute;
+  top: 80px;
+  left: 30px;
+}
+
+.supplier-opton {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 125px;
+  left: 30px;
+  height: 120px;
+  justify-content: space-around;
+
+  .supplier-option-item {
+    @include flex;
+  }
+}
+.line-border {
+  border-top: 2px solid #e0e0e0;
+  position: absolute;
+  height: 80px;
+  width: 440px;
+  bottom: 0;
+  left: 30px;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+}
 .space-3 {
   position: absolute;
   right: -244px;
@@ -1276,5 +1627,91 @@ $color-active: #111;
 }
 .tab-number-margin-3 {
   margin-left: -50px;
+}
+
+/** dialog excel */
+.excel-title {
+  margin: 10px 0 0 30px;
+  font-weight: 700;
+}
+
+.btn-position {
+  @include flex;
+  justify-content: space-between;
+  height: 50px;
+  background: #38393d;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: -webkit-fill-available;
+
+  .btn-close-position {
+    margin-left: 20px;
+    color: #fff;
+    text-transform: none;
+  }
+}
+
+.selected-file {
+  @include flex;
+  width: 300px;
+  justify-content: space-around;
+
+  .span-select {
+    font-weight: 700;
+  }
+  .span-size {
+    color: #757575;
+    white-space: nowrap;
+  }
+}
+
+.input-file {
+  .hidden {
+    display: none;
+  }
+  .file-place {
+    width: 450px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+    font-style: italic;
+    border: 1px solid red;
+    border-radius: 2px;
+    font-weight: 100;
+    background: #fff;
+    margin: 8px 0;
+  }
+}
+.down-filebase {
+  @include flex;
+
+  .span-down {
+    font-size: 14px;
+    color: #147fc4;
+    padding-right: 6px;
+  }
+}
+.file-info {
+  width: 450px;
+  height: 40px;
+  @include flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.file-option {
+  span {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  .option-radio {
+    position: absolute;
+    left: 0;
+    .spacer-midle {
+      height: 15px;
+    }
+  }
 }
 </style>

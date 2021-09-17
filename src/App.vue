@@ -87,7 +87,4 @@ export default {
   // box-shadow: 1px 1px 1px #e6dada;
 }
 
-.theme--light > .v-pagination > .v-pagination__item{
-  border: none;
-}
 </style>
