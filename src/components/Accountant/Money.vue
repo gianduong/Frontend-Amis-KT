@@ -126,7 +126,7 @@
             Nhân viên
             <v-icon color="green">mdi-account-supervisor-outline</v-icon>
           </v-tab>
-          <v-tab
+          <v-tab to="/DI/DIAccount"
             style="text-transform: none; border: 1px solid #e5e5e5; color: #111"
           >
             Hệ thống tài khoản

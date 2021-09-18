@@ -8,6 +8,7 @@
       :class="[searchField ? 'search-field' : '']"
     >
       <textarea
+        ref="autoFocus"
         :placeholder="placeholder"
         :value="value ? value : textValue"
         @input="getValue"
@@ -107,6 +108,7 @@ export default {
 
   .text-field {
     textarea {
+      text-transform: none;
       padding: 6px 11px;
       border-radius: 2px;
       border: 1px solid #babec5;
