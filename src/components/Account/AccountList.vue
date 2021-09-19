@@ -2,41 +2,13 @@
   <div class="content-container">
     <div class="content-title">
       <h3 class="title-name">
-        <h3 class="title-name">Danh sách nhà cung cấp</h3>
+        <h3 class="title-name">Hệ thống tài khoản</h3>
         <router-link to="/CA/CAProcess">&#10094; Tất cả danh mục</router-link>
       </h3>
 
       <!-- Dialog add  -->
       <!--  -->
       <div class="title-option">
-        <img
-          src="../../assets/img/batluc.png"
-          style="
-            width=: 24px;
-            height: 24px;
-            position: absolute;
-            right: 345px;
-            top: 40px;
-          "
-        />
-        <router-link
-          class="link-huong-dan"
-          to="/CA/CAProcess"
-          style="margin: 10px 10px 0 20px"
-        >
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <span
-                v-bind="attrs"
-                v-on="on"
-                style="z-index: 1999; font-size: 13px"
-                >Hướng dẫn</span
-              >
-            </template>
-            <span>Hướng dẫn</span>
-          </v-tooltip>
-        </router-link>
-
         <v-menu v-model="menuUtilities" bottom offset-y left>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -46,8 +18,7 @@
               color="#F4F5F8"
               style="border: 1px solid black; text-transform: none; color: #111"
             >
-              Tiện ích
-              <div class="mi-arrow-up--black mi mi-16"></div>
+              Chuyển tài khoản hạch toán
             </v-btn>
           </template>
           <v-card height="30px" width="200px">
@@ -426,210 +397,35 @@
       </v-snackbar>
       <!-- end region -->
     </div>
-    <div class="tab-sort" :class="{ 'tab-sort-hidden': isTabSortHidden }">
-      <v-tooltip bottom style="z-index: 100000">
-        <template v-slot:activator="{ on, attrs }">
-          <v-tabs
-            v-bind="attrs"
-            v-on="on"
-            background-color="#FF7F2C"
-            height="60px"
-            class="tab-sort-item"
-          >
-            <v-tab style="color: #fff; text-transform: none">
-              <div>
-                <div class="tab-number tab-number-margin-1">100</div>
-                <span>Nợ quá hạn</span>
-              </div>
-              <div class="funnel-icon mi funnel-icon-position-no">
-                <div class="space-3">.</div>
-                <div class="space-3">.</div>
-              </div>
-            </v-tab>
-          </v-tabs>
-        </template>
-        <span>Tùy chỉnh giao diện</span>
-      </v-tooltip>
-
-      <v-tabs
-        background-color="#B8BCC3"
-        show-arrows
-        height="60px"
-        class="tab-sort-item"
-      >
-        <v-tab style="color: #fff; text-transform: none">
-          <div>
-            <div class="tab-number tab-number-margin-2">100</div>
-            <span>Tổng nợ phải thu</span>
-          </div>
-          <div class="funnel-icon mi funnel-icon-position-thu">
-            <div class="space-3">.</div>
-          </div></v-tab
-        >
-      </v-tabs>
-      <v-tabs background-color="#74CB2F" show-arrows height="60px">
-        <v-tab style="color: #fff; text-transform: none"
-          >Đã thanh toán(30 ngày gần đây)
-          <div class="space-3">.</div></v-tab
-        >
-      </v-tabs>
-    </div>
     <!-- main content -->
     <!--  -->
     <div :class="{ loading: showLoading }"></div>
     <div class="main-content">
-      <div
-        class="box-resize mi-24"
-        @click="isTabSortHidden = !isTabSortHidden"
-        :class="{ 'box-rotate': !isTabSortHidden }"
-      >
-        <div
-          class="mi mi-16 mi-chevron-down--primary"
-          style="margin-left: 3px"
-        ></div>
-      </div>
       <div class="search-content">
-        <div class="mi-arrow-check-all mi mi-24"></div>
-        <v-btn
-          class="btn-execution-position"
-          rounded
-          disabled
-          color="#ffffff"
-          style="border: 1px solid black; text-transform: none"
-        >
-          Thực hiện hàng loạt
-          <div class="mi-arrow-up--black mi mi-16"></div>
-        </v-btn>
-
-        <v-menu
-          style="z-index: 100000"
-          v-model="menu"
-          :close-on-content-click="false"
-          :nudge-width="200"
-          bottom
-          offset-y
-          left
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              v-bind="attrs"
-              v-on="on"
-              class="btn-filter-position"
-              rounded
-              color="#ffffff"
-              style="border: 1px solid black; text-transform: none; color: #111"
-            >
-              Lọc
-              <div class="mi-arrow-up--black mi mi-16"></div>
-            </v-btn>
-          </template>
-
-          <v-card width="533px" height="292px">
-            <div class="card-filter">
-              <div class="card-filter-1">
-                <div class="flex-collum size-49">
-                  <label>Loại</label>
-                  <v-autocomplete
-                    solo
-                    v-model="options.value"
-                    :items="options"
-                    item-text="name"
-                    item-value="value"
-                    no-data-text="Không có dữ liệu"
-                  ></v-autocomplete>
-                </div>
-                <div class="flex-collum size-49">
-                  <label>Nhóm</label>
-                  <v-autocomplete
-                    solo
-                    v-model="options.value"
-                    :items="options"
-                    item-text="name"
-                    item-value="value"
-                    no-data-text="Không có dữ liệu"
-                  ></v-autocomplete>
-                </div>
-              </div>
-              <div class="card-filter-2">
-                <div class="flex-collum size-49">
-                  <label>Tình trạng công nợ</label>
-                  <v-autocomplete
-                    solo
-                    v-model="options.value"
-                    :items="options"
-                    item-text="name"
-                    item-value="value"
-                    no-data-text="Không có dữ liệu"
-                  ></v-autocomplete>
-                </div>
-                <div class="flex-collum size-49">
-                  <label>Trạng thái</label>
-                  <v-autocomplete
-                    solo
-                    v-model="options.value"
-                    :items="options"
-                    item-text="name"
-                    item-value="value"
-                    no-data-text="Không có dữ liệu"
-                  ></v-autocomplete>
-                </div>
-              </div>
-              <div class="card-filter-3">
-                <div class="flex-collum size-32">
-                  <label>Tỉnh/TP</label>
-                  <v-autocomplete
-                    solo
-                    v-model="options.value"
-                    :items="options"
-                    item-text="name"
-                    item-value="value"
-                    no-data-text="Không có dữ liệu"
-                  ></v-autocomplete>
-                </div>
-                <div class="flex-collum size-32">
-                  <label>Quận/Huyện</label>
-                  <v-autocomplete
-                    solo
-                    v-model="options.value"
-                    :items="options"
-                    item-text="name"
-                    item-value="value"
-                    no-data-text="Không có dữ liệu"
-                  ></v-autocomplete>
-                </div>
-                <div class="flex-collum size-32">
-                  <label>Xã/Phường</label>
-                  <v-autocomplete
-                    solo
-                    v-model="options.value"
-                    :items="options"
-                    item-text="name"
-                    item-value="value"
-                    no-data-text="Không có dữ liệu"
-                  ></v-autocomplete>
-                </div>
-              </div>
-              <div class="card-filter-4"></div>
-              <div class="card-filter-5">
-                <div class="btn-cancel">
-                  <Button :content="'Đặt lại'" :btnWhite="true" tabindex="0" />
-                </div>
-                <div class="btn-action">
-                  <Button :content="'Lọc'" tabindex="0" />
-                </div>
-              </div>
-            </div>
-          </v-card>
-        </v-menu>
         <div class="search-wrapper">
           <InputField
-            :placeholder="'Nhập từ khóa tìm kiếm'"
+            :placeholder="'Tìm kiếm theo số, tên tài khoản'"
             :searchField="true"
             v-model="filterValue"
             v-debounce:300ms="handelFilter"
             ref="inputSearch"
           />
         </div>
+
+        <v-tooltip bottom style="z-index: 100000">
+          <template v-slot:activator="{ on, attrs }">
+            <div
+              @click="RefreshEmployee"
+              v-bind="attrs"
+              v-on="on"
+              class="collapse-table"
+            >
+              Thu gọn
+            </div>
+          </template>
+          <span>Thu gọn dữ liệu</span>
+        </v-tooltip>
+
         <v-tooltip bottom style="z-index: 100000">
           <template v-slot:activator="{ on, attrs }">
             <div @click="RefreshEmployee" v-bind="attrs" v-on="on">
@@ -647,50 +443,35 @@
           </template>
           <span>Xuất ra file</span>
         </v-tooltip>
-
-        <v-tooltip bottom style="z-index: 100000">
-          <template v-slot:activator="{ on, attrs }">
-            <div @click="exportExcel" v-bind="attrs" v-on="on">
-              <div class="setting-icon"></div>
-            </div>
-          </template>
-          <span>Tùy chỉnh giao diện</span>
-        </v-tooltip>
       </div>
-
       <!--  -->
       <!-- Table -->
       <div class="table-content">
         <table class="table">
           <thead>
             <tr>
-              <th class="table-head-checkbox">
-                <div @click="isCheckBox = !isCheckBox">
-                  <CheckboxField :isCheck="isCheckBox" />
-                </div>
-              </th>
               <th class="m-180">
-                Mã nhà cung cấp
-                <div class="line"></div>
-              </th>
-              <th class="m-400">
-                Tên nhà cung cấp
+                Số tài khoản
                 <div class="line"></div>
               </th>
               <th class="m-250">
-                Địa chỉ
+                Tên tài khoản
                 <div class="line"></div>
               </th>
               <th class="m-150">
-                Mã số thuế
+                Tính chất
                 <div class="line"></div>
               </th>
               <th class="m-150">
-                Điện thoại
+                Tên tiếng anh
+                <div class="line"></div>
+              </th>
+              <th class="m-400">
+                Diễn giải
                 <div class="line"></div>
               </th>
               <th class="m-150">
-                Số CMND
+                Trang thái
                 <div class="line"></div>
               </th>
               <th class="th-sticky m-200">
@@ -702,18 +483,17 @@
           <tbody>
             <!--  -->
             <!-- employee detail -->
-            <Account
-              style="cursor: pointer"
-              v-for="(employee, index) in listEmployee"
-              :key="index"
-              :index="index"
-              :employee="employee"
-              @handleGetEmployeeID="getEmployeeID"
-              @handleReload="getListEmployee"
-              :listDeparment="listDepartment"
-              @duplicateEmployee="handleDuplicateEmployee"
-              :isCheckBox="isCheckBox"
-            />
+            <tr>
+              <!-- <td v-for="item in items" :key="item.id"></td> -->
+              <v-treeview :items="items">
+                <!-- <td>{{ items.id }}</td>
+                <td>{{ items.name }}</td>
+                <td>{{ items.tc }}</td>
+                <td>{{ items.ta }}</td>
+                <td>{{ items.dg }}</td>
+                <td>{{ items.tt }}</td> -->
+              </v-treeview>
+            </tr>
             <!-- End of employee detail -->
             <!--  -->
           </tbody>
@@ -805,6 +585,88 @@ export default {
   //#region Data
   data() {
     return {
+      items: [
+        {
+          id: 1,
+          name: "Applications :",
+          tc: "110",
+          ta: "123",
+          dg: "123",
+          tt: "2345",
+          children: [
+            {
+              id: 2,
+              name: "Calendar : app",
+              tc: "110",
+              ta: "123",
+              dg: "123",
+              tt: "2345",
+            },
+            {
+              id: 3,
+              name: "Chrome : app",
+              tc: "110",
+              ta: "123",
+              dg: "123",
+              tt: "2345",
+            },
+            {
+              id: 4,
+              name: "Webstorm : app",
+              tc: "110",
+              ta: "123",
+              dg: "123",
+              tt: "2345",
+            },
+          ],
+        },
+        {
+          id: 5,
+          name: "Documents :",
+          tc: "110",
+          ta: "123",
+          dg: "123",
+          tt: "2345",
+          children: [
+            {
+              id: 6,
+              name: "vuetify :",
+              tc: "110",
+              ta: "123",
+              dg: "123",
+              tt: "2345",
+              children: [
+                {
+                  id: 7,
+                  name: "src :",
+                  tc: "110",
+                  ta: "123",
+                  dg: "123",
+                  tt: "2345",
+                  children: [
+                    {
+                      id: 8,
+                      name: "index : ts",
+                      tc: "110",
+                      ta: "123",
+                      dg: "123",
+                      tt: "2345",
+                    },
+                    {
+                      id: 9,
+                      name: "bootstrap : ts",
+                      tc: "110",
+                      ta: "123",
+                      dg: "123",
+                      tt: "2345",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
       e1: 1,
       isAddExcel: true, // trạng thái khi import excel
       dialogAccounts: false,
@@ -1230,7 +1092,7 @@ $color-active: #111;
 
     .title-option {
       @include flex;
-      width: 73%;
+      width: 76%;
       justify-content: flex-end;
     }
 
@@ -1301,34 +1163,42 @@ $color-active: #111;
   }
   /*-------------------- icon content------------------- */
   .search-content {
-    padding: 0 16px 16px 16px;
+    padding: 20px 16px 16px 16px;
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
-  }
-  .search-wrapper {
-    width: 240px;
-  }
-  .refresh-icon {
-    @include icon(-423px, -201px);
-    &:hover {
+    .search-wrapper {
+      position: absolute;
+      left: 40px;
+      width: 240px;
+    }
+    .collapse-table {
+      margin-bottom: 10px;
+      color: #147fc4;
       cursor: pointer;
-      background-position: -1097px -88px;
+    }
+    .refresh-icon {
+      @include icon(-423px, -201px);
+      &:hover {
+        cursor: pointer;
+        background-position: -1097px -88px;
+      }
+    }
+    .excel-icon {
+      @include icon(-704px, -200px);
+    }
+    .excel-icon:hover {
+      background-position: -704px -256px;
+    }
+
+    .setting-icon {
+      @include icon(-88px, -200px);
+    }
+    .setting-icon:hover {
+      background-position: -88px -256px;
     }
   }
-  .excel-icon {
-    @include icon(-704px, -200px);
-  }
-  .excel-icon:hover {
-    background-position: -704px -256px;
-  }
 
-  .setting-icon {
-    @include icon(-88px, -200px);
-  }
-  .setting-icon:hover {
-    background-position: -88px -256px;
-  }
   /* Footer-pagination */
   .pagination-container {
     position: sticky;

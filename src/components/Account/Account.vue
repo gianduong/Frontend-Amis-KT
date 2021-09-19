@@ -1,16 +1,15 @@
 <template>
   <!-- employee detail -->
   <tr @dblclick="getEmployeeInfoId(employee.employeeId)">
-    <td class="table-checkbox" @click="handleCheckBox">
-      <CheckboxField :isCheck="isCheckBoxSingle" />
-    </td>
-    <td>{{ employee.employeeCode }}</td>
-    <td>{{ employee.fullName }}</td>
-    <td>{{ employee.genderName }}</td>
-    <td>{{ employee.dateOfBirth | formatDate }}</td>
-    <td>{{ employee.identityNumber }}</td>
-    <td>{{ employee.positionName }}</td>
-    <td
+    <!-- <td v-for="item in items" :key="item.id"></td> -->
+    <v-treeview activatable :items="items">
+      <td>{{items.id}}</td>
+      <td>{{items.name}}</td>
+      <td>{{items.tc}}</td>
+      <td>{{items.ta}}</td>
+      <td>{{items.dg}}</td>
+      <td>{{items.tt}}</td>
+      <td
       class="sticky no--right-border"
       :style="
         showDropTop
@@ -20,7 +19,9 @@
     >
       <div class="border-left border-left--dotted"></div>
       <div class="fix-container">
-        <span @click="getEmployeeInfoId(employee.employeeId)">Lập CT mua hàng</span>
+        <span @click="getEmployeeInfoId(employee.employeeId)"
+          >Lập CT mua hàng</span
+        >
 
         <div class="choose-btn" @focusout="closeDrop">
           <!-- dropdown -->
@@ -74,7 +75,12 @@
           <!-- region snackbar -->
 
           <!-- v-snackbar lỗi -->
-          <v-snackbar v-model="snackbar" top color="red lighten-1" timeout="3000">
+          <v-snackbar
+            v-model="snackbar"
+            top
+            color="red lighten-1"
+            timeout="3000"
+          >
             {{ messageSnackbar }}
 
             <template v-slot:action="{ attrs }">
@@ -89,7 +95,12 @@
             </template>
           </v-snackbar>
           <!-- v-snackbar thành công -->
-          <v-snackbar v-model="snackbarSuccess" top color="blue lighten-2" timeout="3000">
+          <v-snackbar
+            v-model="snackbarSuccess"
+            top
+            color="blue lighten-2"
+            timeout="3000"
+          >
             {{ messageSuccess }}
 
             <template v-slot:action="{ attrs }">
@@ -109,6 +120,8 @@
       </div>
       <!-- <div class="line"></div> -->
     </td>
+    </v-treeview>
+    
   </tr>
   <!-- End of employee detail -->
 </template>
@@ -144,6 +157,88 @@ export default {
       messageSnackbar: "", // thông điệp snackbar
       snackbarSuccess: false,
       messageSuccess: "",
+      items: [
+        {
+          id: 1,
+          name: "Applications :",
+          tc: "110",
+          ta: "123",
+          dg: "123",
+          tt: "2345",
+          children: [
+            {
+              id: 2,
+              name: "Calendar : app",
+              tc: "110",
+              ta: "123",
+              dg: "123",
+              tt: "2345",
+            },
+            {
+              id: 3,
+              name: "Chrome : app",
+              tc: "110",
+              ta: "123",
+              dg: "123",
+              tt: "2345",
+            },
+            {
+              id: 4,
+              name: "Webstorm : app",
+              tc: "110",
+              ta: "123",
+              dg: "123",
+              tt: "2345",
+            },
+          ],
+        },
+        {
+          id: 5,
+          name: "Documents :",
+          tc: "110",
+          ta: "123",
+          dg: "123",
+          tt: "2345",
+          children: [
+            {
+              id: 6,
+              name: "vuetify :",
+              tc: "110",
+              ta: "123",
+              dg: "123",
+              tt: "2345",
+              children: [
+                {
+                  id: 7,
+                  name: "src :",
+                  tc: "110",
+                  ta: "123",
+                  dg: "123",
+                  tt: "2345",
+                  children: [
+                    {
+                      id: 8,
+                      name: "index : ts",
+                      tc: "110",
+                      ta: "123",
+                      dg: "123",
+                      tt: "2345",
+                    },
+                    {
+                      id: 9,
+                      name: "bootstrap : ts",
+                      tc: "110",
+                      ta: "123",
+                      dg: "123",
+                      tt: "2345",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
   },
   //#endregion
