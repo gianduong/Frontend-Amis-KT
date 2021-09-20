@@ -1,5 +1,413 @@
 <template>
   <div class="content-container">
+    <div class="account-detail" :class="{ hidden: !isShowDialogAddOrUpdate }">
+      <div class="account-model"></div>
+      <div
+        class="account-dialog"
+        :class="{ 'resize-dialog-rotate': isFullSize }"
+      >
+        <div class="account-title">
+          <div class="title-detail">Thêm tài khoản</div>
+          <div
+            class="resize-dialog"
+            @click="isFullSize = !isFullSize"
+            :class="{ 'rotate-resize': isFullSize }"
+          >
+            <div
+              class="mi mi-16 mi-chevron-left"
+              :class="{ 'rotate-icon': isFullSize }"
+            ></div>
+          </div>
+          <div class="modal-close">
+            <v-tooltip bottom style="z-index: 100000">
+              <template v-slot:activator="{ on, attrs }">
+                <div
+                  class="modal-icon help-icon"
+                  v-bind="attrs"
+                  v-on="on"
+                ></div>
+              </template>
+              <span>Hỏi đáp</span>
+            </v-tooltip>
+            <v-tooltip bottom style="z-index: 100000">
+              <template v-slot:activator="{ on, attrs }">
+                <div
+                  class="modal-icon close-icon"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="isShowDialogAddOrUpdate = false"
+                ></div>
+              </template>
+              <span>Thoát (ESC)</span>
+            </v-tooltip>
+          </div>
+        </div>
+        <div class="account-content">
+          <div class="top-content-1">
+            <InputField class="h-32 w-24" :label="'Số tài khoản'" />
+          </div>
+          <div class="top-content-2">
+            <InputField class="h-32 w-49" :label="'Tên tài khoản'" />
+            <InputField class="h-32 w-49" :label="'Tên tiếng anh'" />
+          </div>
+          <div class="top-content-3">
+            <div class="h-32 w-24" style="margin-right: 1%">
+              <label>Tài khoản tổng hợp</label>
+              <v-autocomplete
+                solo
+                v-model="options.value"
+                :items="options"
+                item-text="name"
+                item-value="value"
+                no-data-text="Không có dữ liệu"
+              ></v-autocomplete>
+            </div>
+            <div class="h-32 w-24">
+              <label>Tính chất <span style="color: red">*</span></label>
+              <v-autocomplete
+                solo
+                v-model="options.value"
+                :items="options"
+                item-text="name"
+                item-value="value"
+                no-data-text="Không có dữ liệu"
+              ></v-autocomplete>
+            </div>
+          </div>
+          <div class="top-content-4">
+            <TextAreaField class="h-32 w-100" :rows="2" :label="'Diễn giải'" />
+          </div>
+          <div class="top-content-5">
+            <CheckboxField
+              :isCheck="isCheckBox"
+              v-on:click="isCheckBox = !isCheckBox"
+              :content="'Có hạch toán ngoại tệ'"
+            />
+          </div>
+          <div
+            class="bottom-content-1"
+            @click="followedDetail = !followedDetail"
+          >
+            <div class="mi mi-16 mi-arrow-right--black" :class="{'rotate-icon-90': !followedDetail}"></div>
+            <span class="content-1-title" style="font-size: 16px"
+              >Theo giõi chi tiết theo</span
+            >
+          </div>
+          <div
+            class="bottom-content-detail"
+            :class="{ hidden: followedDetail }"
+          >
+            <div class="content-detail-1">
+              <div class="content-child">
+                <v-checkbox
+                  class="w-40"
+                  label="Đối tượng"
+                  color="success"
+                  @click="isHideDoiTuong = !isHideDoiTuong"
+                  hide-details
+                ></v-checkbox>
+                <div class="w-40 h-32" :class="{ hidden: !isHideDoiTuong }">
+                  <v-autocomplete
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+                <div class="w-40 h-32" :class="{ hidden: isHideDoiTuong }">
+                  <v-autocomplete
+                    disabled
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+              </div>
+              <div class="content-child">
+                <v-checkbox
+                  class="w-40"
+                  label="Tài khoản ngân hàng"
+                  color="success"
+                  hide-details
+                ></v-checkbox>
+              </div>
+            </div>
+            <div class="content-detail-1">
+              <div class="content-child">
+                <v-checkbox
+                  class="w-40"
+                  label="Đối tượng THCP"
+                  color="success"
+                  @click="isHideDoiTuongTHCP = !isHideDoiTuongTHCP"
+                  hide-details
+                ></v-checkbox>
+                <div class="w-40 h-32" :class="{ hidden: !isHideDoiTuongTHCP }">
+                  <v-autocomplete
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+                <div class="w-40 h-32" :class="{ hidden: isHideDoiTuongTHCP }">
+                  <v-autocomplete
+                    solo
+                    disabled
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+              </div>
+              <div class="content-child">
+                <v-checkbox
+                  class="w-40"
+                  label="Công trình"
+                  color="success"
+                  @click="isHideCongTrinh = !isHideCongTrinh"
+                  hide-details
+                ></v-checkbox>
+                <div class="w-40 h-32" :class="{ hidden: !isHideCongTrinh }">
+                  <v-autocomplete
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+                <div class="w-40 h-32" :class="{ hidden: isHideCongTrinh }">
+                  <v-autocomplete
+                    solo
+                    disabled
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+              </div>
+            </div>
+            <div class="content-detail-1">
+              <div class="content-child">
+                <v-checkbox
+                  class="w-40"
+                  label="Đơn đặt hàng"
+                  color="success"
+                  @click="isHideDonDatHang = !isHideDonDatHang"
+                  hide-details
+                ></v-checkbox>
+                <div class="w-40 h-32" :class="{ hidden: !isHideDonDatHang }">
+                  <v-autocomplete
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+                <div class="w-40 h-32" :class="{ hidden: isHideDonDatHang }">
+                  <v-autocomplete
+                    solo
+                    disabled
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+              </div>
+              <div class="content-child">
+                <v-checkbox
+                  class="w-40"
+                  label="Hợp đồng bán"
+                  color="success"
+                  @click="isHideHopDongBan = !isHideHopDongBan"
+                  hide-details
+                ></v-checkbox>
+                <div class="w-40 h-32" :class="{ hidden: !isHideHopDongBan }">
+                  <v-autocomplete
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+                <div class="w-40 h-32" :class="{ hidden: isHideHopDongBan }">
+                  <v-autocomplete
+                    solo
+                    disabled
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+              </div>
+            </div>
+            <div class="content-detail-1">
+              <div class="content-child">
+                <v-checkbox
+                  class="w-40"
+                  label="Hợp đồng mua"
+                  color="success"
+                  @click="isHideHopDongMua = !isHideHopDongMua"
+                  hide-details
+                ></v-checkbox>
+                <div class="w-40 h-32" :class="{ hidden: !isHideHopDongMua }">
+                  <v-autocomplete
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+                <div class="w-40 h-32" :class="{ hidden: isHideHopDongMua }">
+                  <v-autocomplete
+                    solo
+                    disabled
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+              </div>
+              <div class="content-child">
+                <v-checkbox
+                  class="w-40"
+                  label="Khoản mục CP"
+                  color="success"
+                  @click="isHideKhoanMucCP = !isHideKhoanMucCP"
+                  hide-details
+                ></v-checkbox>
+                <div class="w-40 h-32" :class="{ hidden: !isHideKhoanMucCP }">
+                  <v-autocomplete
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+                <div class="w-40 h-32" :class="{ hidden: isHideKhoanMucCP }">
+                  <v-autocomplete
+                    solo
+                    disabled
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+              </div>
+            </div>
+            <div class="content-detail-1">
+              <div class="content-child">
+                <v-checkbox
+                  class="w-40"
+                  label="Đơn vị"
+                  color="success"
+                  @click="isHideDonVi = !isHideDonVi"
+                  hide-details
+                ></v-checkbox>
+                <div class="w-40 h-32" :class="{ hidden: !isHideDonVi }">
+                  <v-autocomplete
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+                <div class="w-40 h-32" :class="{ hidden: isHideDonVi }">
+                  <v-autocomplete
+                    solo
+                    disabled
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+              </div>
+              <div class="content-child">
+                <v-checkbox
+                  class="w-40"
+                  label="Mã thống kê"
+                  color="success"
+                  @click="isHideMaThongKe = !isHideMaThongKe"
+                  hide-details
+                ></v-checkbox>
+                <div class="w-40 h-32" :class="{ hidden: !isHideMaThongKe }">
+                  <v-autocomplete
+                    solo
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+                <div class="w-40 h-32" :class="{ hidden: isHideMaThongKe }">
+                  <v-autocomplete
+                    solo
+                    disabled
+                    v-model="options.value"
+                    :items="options"
+                    item-text="name"
+                    item-value="value"
+                    no-data-text="Không có dữ liệu"
+                  ></v-autocomplete>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="container-bottom">
+            <div class="btn-close">
+              <Button
+                @click="$emit('handleCloseDialog')"
+                @keydown.enter="HandleEnter('Hủy')"
+                :content="'Hủy'"
+                :btnWhite="true"
+                tabindex="0"
+              />
+            </div>
+            <div class="btn-save">
+              <div class="btn-cat">
+                <Button :content="'Cất'" :btnWhite="true" tabindex="0" />
+              </div>
+              <div class="btn-saveAndAdd">
+                <Button :content="'Cất và Thêm'" tabindex="0" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="content-title">
       <h3 class="title-name">
         <h3 class="title-name">Hệ thống tài khoản</h3>
@@ -67,42 +475,19 @@
           </div>
         </v-card>
       </v-dialog>
-      <div class="dialog-add-update">
-        <v-dialog
-          v-model="isShowDialogAddOrUpdate"
-          width="900px"
-          :persistent="true"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <div class="btn-add" v-bind="attrs" v-on="on">
-              <!-- <Button content="Thêm" v-bind="attrs" v-on="on" /> -->
-              <v-btn
-                style="border-radius: 30px 0 0 30px; margin-left: 10px"
-                color="#2CA01C"
-                v-bind="attrs"
-                v-on="on"
-                ><span style="color: #fff; text-transform: none"
-                  >Thêm</span
-                ></v-btn
-              >
-            </div>
-            <div class="btn-middle-line"></div>
-          </template>
 
-          <v-card height="650px" @keydown.esc="closeDialog">
-            <AccountDetail
-              :employeeDetail="employeeDetail"
-              @handleCloseDialog="closeDialog"
-              @handleShowDialog="showDialog"
-              @handleReload="getListEmployee"
-              @resetEmployeeDetail="resetEmployeeDetail"
-              :modeUpdate="modeUpdate"
-              :dialogAddOrUpdate="isShowDialogAddOrUpdate"
-              :listDepartment="listDepartment"
-              @onNotify="handleNotify"
-            />
-          </v-card>
-        </v-dialog>
+      <div class="dialog-add-update">
+        <div class="btn-add" @click="isShowDialogAddOrUpdate = true">
+          <!-- <Button content="Thêm" v-bind="attrs" v-on="on" /> -->
+          <v-btn
+            style="border-radius: 30px 0 0 30px; margin-left: 10px"
+            color="#2CA01C"
+            v-bind="attrs"
+            v-on="on"
+            ><span style="color: #fff; text-transform: none">Thêm</span></v-btn
+          >
+        </div>
+        <div class="btn-middle-line"></div>
 
         <v-menu v-model="menuExcel" bottom offset-y left>
           <template v-slot:activator="{ on, attrs }">
@@ -446,58 +831,21 @@
       </div>
       <!--  -->
       <!-- Table -->
+
       <div class="table-content">
-        <table class="table">
-          <thead>
-            <tr>
-              <th class="m-180">
-                Số tài khoản
-                <div class="line"></div>
-              </th>
-              <th class="m-250">
-                Tên tài khoản
-                <div class="line"></div>
-              </th>
-              <th class="m-150">
-                Tính chất
-                <div class="line"></div>
-              </th>
-              <th class="m-150">
-                Tên tiếng anh
-                <div class="line"></div>
-              </th>
-              <th class="m-400">
-                Diễn giải
-                <div class="line"></div>
-              </th>
-              <th class="m-150">
-                Trang thái
-                <div class="line"></div>
-              </th>
-              <th class="th-sticky m-200">
-                <div class="border-left"></div>
-                Chức năng
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <!--  -->
-            <!-- employee detail -->
-            <tr>
-              <!-- <td v-for="item in items" :key="item.id"></td> -->
-              <v-treeview :items="items">
-                <!-- <td>{{ items.id }}</td>
-                <td>{{ items.name }}</td>
-                <td>{{ items.tc }}</td>
-                <td>{{ items.ta }}</td>
-                <td>{{ items.dg }}</td>
-                <td>{{ items.tt }}</td> -->
-              </v-treeview>
-            </tr>
-            <!-- End of employee detail -->
-            <!--  -->
-          </tbody>
-        </table>
+        <tree-table class="table" :columns="columns" :table-data="tableData">
+          <template #headerTemplate="headerProps">
+            <MenuHeader v-bind="headerProps" :sort-table="sortTable" />
+          </template>
+
+          <template #leafTemplate="leafProps">
+            <MenuLeaf v-bind="leafProps" />
+          </template>
+
+          <template #nodeTemplate="nodeProps">
+            <MenuNode v-bind="nodeProps" />
+          </template>
+        </tree-table>
       </div>
       <!-- end table-->
       <!--  -->
@@ -507,40 +855,7 @@
     <div class="pagination-container">
       <div class="total-item">
         Tổng số : <span class="total-value">{{ totalItem }}</span> bản ghi
-      </div>
-      <div class="pagination-wrapper">
-        <div class="dropdown-pagiantion">
-          <div style="witdh: 200px; height: 32px">
-            <Combobox
-              v-model="pageSize"
-              :value.sync="pageSize"
-              :suggestions="options"
-              @ChangeValue="handleChangeValue"
-            />
-          </div>
-        </div>
-        <div class="paginations">
-          <button
-            class="pagination-prev-btn"
-            :class="[pageInt > 1 ? 'active' : null]"
-            @click="handlePrev"
-          >
-            Trước
-          </button>
-          <v-pagination
-            v-model="pageInt"
-            :length="totalPage"
-            color="#fff"
-          ></v-pagination>
-          <button
-            class="pagination-next-btn"
-            :class="[pageInt < totalPage ? 'active' : null]"
-            @click="handleNext"
-          >
-            Sau
-          </button>
-        </div>
-      </div>
+      </div>    
     </div>
     <!-- End of pagination -->
     <!--  -->
@@ -556,14 +871,17 @@ import Button from "../commons/Button.vue";
 import Combobox from "../commons/Combobox.vue";
 import Autocomplete from "../commons/ComboboxAutoComplete.vue";
 import InputField from "../commons/InputField.vue";
+import TextAreaField from "../commons/TextAreaField.vue";
 import axios from "axios";
 import "../../css/table.css";
-import Employee from "../Employee/Employee.vue";
 import AccountDetail from "./AccountDetail.vue";
 import Account from "./Account.vue";
-import EmployeeDetail from "../Employee/EmployeeDetail.vue";
 import queryString from "query-string";
 import DialogNotify from "../commons/DialogNotify.vue";
+import TreeTable from "vue-tree-table-component";
+import MenuLeaf from "./MenuLeaf";
+import MenuNode from "./MenuNode";
+import MenuHeader from "./MenuHeader";
 //#endregion
 
 export default {
@@ -572,47 +890,45 @@ export default {
     CheckboxField,
     Button,
     InputField,
-    Employee,
+    TextAreaField,
     DialogNotify,
     Combobox,
     Autocomplete,
-    EmployeeDetail,
     AccountDetail,
     Account,
+    TreeTable,
+    MenuLeaf,
+    MenuNode,
+    MenuHeader,
   },
   //#endregion
 
   //#region Data
   data() {
     return {
-      items: [
+      // #region checkbox dialog add account
+      isHideDoiTuong: false,
+      isHideDoiTuongTHCP: false,
+      isHideCongTrinh: false,
+      isHideDonDatHang: false,
+      isHideHopDongBan: false,
+      isHideHopDongMua: false,
+      isHideKhoanMucCP: false,
+      isHideDonVi: false,
+      isHideMaThongKe: false,
+      // end region
+      tableData: [
         {
-          id: 1,
-          name: "Applications :",
+          id: "Ziuta",
+          tk: "Kozak",
           tc: "110",
           ta: "123",
           dg: "123",
           tt: "2345",
           children: [
             {
-              id: 2,
-              name: "Calendar : app",
-              tc: "110",
-              ta: "123",
-              dg: "123",
-              tt: "2345",
-            },
-            {
-              id: 3,
-              name: "Chrome : app",
-              tc: "110",
-              ta: "123",
-              dg: "123",
-              tt: "2345",
-            },
-            {
-              id: 4,
-              name: "Webstorm : app",
+              id: "Czerwony Kapturek",
+              tk: "Kozak",
               tc: "110",
               ta: "123",
               dg: "123",
@@ -621,53 +937,54 @@ export default {
           ],
         },
         {
-          id: 5,
-          name: "Documents :",
+          id: "Koziolek",
+          tk: "Matolek",
           tc: "110",
           ta: "123",
           dg: "123",
           tt: "2345",
           children: [
             {
-              id: 6,
-              name: "vuetify :",
+              id: "Timon",
+              tk: "Matolek",
               tc: "110",
               ta: "123",
               dg: "123",
               tt: "2345",
               children: [
                 {
-                  id: 7,
-                  name: "src :",
+                  id: "Timon Junior",
+                  tk: "Matolek",
                   tc: "110",
                   ta: "123",
                   dg: "123",
                   tt: "2345",
-                  children: [
-                    {
-                      id: 8,
-                      name: "index : ts",
-                      tc: "110",
-                      ta: "123",
-                      dg: "123",
-                      tt: "2345",
-                    },
-                    {
-                      id: 9,
-                      name: "bootstrap : ts",
-                      tc: "110",
-                      ta: "123",
-                      dg: "123",
-                      tt: "2345",
-                    },
-                  ],
                 },
               ],
             },
           ],
         },
+        {
+          id: "Pumba",
+          tk: "unknown",
+          tc: "110",
+          ta: "123",
+          dg: "123",
+          tt: "2345",
+        },
+      ],
+      columns: [
+        { label: "SỐ TÀI KHOẢN", id: "id" },
+        { label: "TÊN TÀI KHOẢN", id: "tk" },
+        { label: "TÍNH CHẤT", id: "tc" },
+        { label: "TÊN TIẾNG ANH", id: "ta" },
+        { label: "DIỄN GIẢI", id: "dg" },
+        { label: "TRANG THÁI", id: "tt" },
+        // { label: "CHỨC NĂNG", id: "cn" },
       ],
       e1: 1,
+      isFullSize: false, // trạng thái full size
+      followedDetail: false, // theo giõi chi tiết theo
       isAddExcel: true, // trạng thái khi import excel
       dialogAccounts: false,
       dialogExcel: false, // giao diện thực hiện import excel
@@ -904,6 +1221,10 @@ export default {
       this.pageInt = 1;
       this.getListEmployee();
     },
+
+    sortTable(params) {
+      sortData(this.tableData, params);
+    },
     //#endregion
 
     //#region các hàm gọi API
@@ -1070,7 +1391,7 @@ $color-active: #111;
   top: 40%;
   left: 50%;
   @include widthHeight(100%, 100%);
-  z-index: 10001;
+  z-index: 12;
 }
 /** ----------------Container-------------- */
 .content-container {
@@ -1295,6 +1616,15 @@ $color-active: #111;
 .mi {
   background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat;
   cursor: pointer;
+}
+
+.mi-arrow-right--black {
+  background-position: -320px -360px;
+  transition: all .2s ease-out;
+}
+
+.mi-chevron-left {
+  background-position: -35px -360px;
 }
 
 .mi-arrow-check-all {
@@ -1537,9 +1867,6 @@ $color-active: #111;
 }
 
 .input-file {
-  .hidden {
-    display: none;
-  }
   .file-place {
     width: 450px;
     height: 50px;
@@ -1583,5 +1910,188 @@ $color-active: #111;
       height: 15px;
     }
   }
+}
+.table {
+  width: 100%;
+}
+
+/** acc */
+.account-detail {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 111;
+  .account-model {
+    opacity: 0.46;
+    background-color: rgb(33, 33, 33);
+    border-color: rgb(33, 33, 33);
+    width: 100%;
+    height: 100%;
+  }
+  .account-dialog {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s;
+    .resize-dialog {
+      @include widthHeight(12px, 50px);
+      background: #fff;
+      border: 1px solid #d4d7dc;
+      border-radius: 8px;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      left: -6px;
+      top: 43%;
+    }
+
+    .rotate-resize {
+      left: 0;
+      justify-content: right;
+    }
+    .account-title {
+      height: 70px;
+      .title-detail {
+        font-size: 24px;
+        font-weight: 600;
+        color: #212121;
+        margin: 10px 0 0 20px;
+      }
+      .modal-close {
+        padding-left: 12px;
+        margin-right: 10px;
+        @include flex;
+        position: absolute;
+        right: 10px;
+        .modal-icon {
+          @include widthHeight(24px, 24px);
+          cursor: pointer;
+          background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat;
+        }
+        .help-icon {
+          background-position: -89px -144px;
+          margin-right: 10px;
+        }
+        .close-icon {
+          background-position: -144px -144px;
+        }
+      }
+    }
+    .account-content {
+      height: 80%;
+      display: flex;
+      flex-direction: column;
+      margin-left: 16px;
+      margin-right: 16px;
+      .top-content-1 {
+        height: 8%;
+      }
+      .top-content-2 {
+        height: 8%;
+        @include flex;
+        justify-content: space-between;
+      }
+      .top-content-3 {
+        height: 10%;
+        @include flex;
+      }
+      .top-content-4 {
+        height: 10%;
+        margin-top: 15px;
+      }
+      .top-content-5 {
+        height: 3%;
+        margin-top: 15px;
+      }
+      .bottom-content-1 {
+        @include flex;
+        margin: 20px 0 5px 0;
+        .content-1-title:hover {
+          color: #35bf22;
+          cursor: pointer;
+        }
+      }
+      .bottom-content-detail {
+        height: 30%;
+        transition: all 0.2s ease-out;
+        .content-detail-1 {
+          height: 20%;
+          margin-left: 20px;
+          @include flex;
+          .content-child {
+            width: 50%;
+            @include flex;
+          }
+        }
+      }
+      .container-bottom {
+        height: 8%;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid #b7b5b5;
+        margin: 0 16px 0 16px;
+        .btn-close {
+          width: 67px;
+          margin-top: 16px;
+        }
+
+        .btn-save {
+          width: 200px;
+          margin-right: 30px;
+          @include flex;
+          justify-content: flex-end;
+          .btn-cat {
+            width: 67px;
+            margin-right: 10px;
+          }
+
+          .btn-saveAndAdd {
+            width: 116px;
+          }
+        }
+      }
+    }
+  }
+}
+.h-32 {
+  height: 32px;
+}
+.w-20 {
+  width: 20% !important;
+}
+.w-24 {
+  width: 24%;
+}
+.w-40 {
+  width: 40%;
+}
+.w-49 {
+  width: 49%;
+}
+.w-100 {
+  width: 100%;
+}
+.hidden {
+  display: none;
+}
+.resize-dialog-rotate {
+  width: 100% !important;
+}
+.rotate-icon {
+  transform: rotate(180deg);
+}
+.rotate-icon-90 {
+  transform: rotate(90deg);
 }
 </style>
