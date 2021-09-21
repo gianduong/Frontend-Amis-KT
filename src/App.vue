@@ -86,5 +86,4 @@ export default {
   // border-color: #2ca01c;
   // box-shadow: 1px 1px 1px #e6dada;
 }
-
 </style>

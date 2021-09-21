@@ -9,6 +9,7 @@
             color: #111;
             font-size: 13px;
           "
+          @click="tab = 1"
           >Quy chình</v-tab
         >
         <v-tab
@@ -18,6 +19,7 @@
             color: #111;
             font-size: 13px;
           "
+          @click="tab = 2"
           >Thu, chi tiền</v-tab
         >
       </v-tabs>
@@ -68,7 +70,6 @@
                   v-for="(item, index) in kiemKeQuy"
                   :key="index"
                   link
-                  
                 >
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
@@ -89,7 +90,13 @@
               </template>
 
               <v-list dense>
-                <v-list-item v-for="(item, index) in chiTien" :key="index" link>
+                <v-list-item
+                  v-for="(item, index) in chiTien"
+                  @click="handleListChiTien(index)"
+                  :key="index"
+                  link
+                  :href="'#purchase-' + item.link"
+                >
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
               </v-list>
@@ -126,7 +133,8 @@
             Nhân viên
             <v-icon color="green">mdi-account-supervisor-outline</v-icon>
           </v-tab>
-          <v-tab to="/DI/DIAccount"
+          <v-tab
+            to="/DI/DIAccount"
             style="text-transform: none; border: 1px solid #e5e5e5; color: #111"
           >
             Hệ thống tài khoản
@@ -151,15 +159,33 @@
         </div>
       </div>
     </div>
+
     <!-- end main content -->
     <!--  -->
+
+    <v-dialog
+      v-model="dialogPhieuChi"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <Payment style="width:100%, height:100%"/>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
+import Payment from "./Payment.vue"
 export default {
+  components:{
+    Payment,
+  },
   data() {
     return {
+      tab: 1,
+      dialogPhieuChi: false,
       thuTien: [
         { title: "Phiếu thu" },
         { title: "Thu tiền theo hóa đơn" },
@@ -167,25 +193,32 @@ export default {
       ],
       kiemKeQuy: [{ title: "Kiểm kê" }],
       chiTien: [
-        { title: "Phiếu chi" },
-        { title: "Trả tên theo hóa đơn" },
-        { title: "Nộp thuế" },
+        { title: "Phiếu chi", link:"chitien" },
+        { title: "Trả tên theo hóa đơn", link:"tratien" },
+        { title: "Nộp thuế",link:"thue" },
       ],
     };
+  },
+  methods: {
+    handleListChiTien(index) {
+      if (index == 0) {
+        this.dialogPhieuChi = true;
+      }
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.v-list{
+.v-list {
   padding-top: 3px;
   padding-bottom: 3px;
 }
-.v-list-item{
+.v-list-item {
   height: 30px;
   min-height: 20px;
 }
-.v-list-item__title:hover{
+.v-list-item__title:hover {
   color: #23c70c;
 }
 
@@ -275,7 +308,7 @@ $color-active: #111;
         @include widthHeight(100%, 300px);
         margin-left: 10%;
         margin-top: 10px;
-        .img-ThuTien{
+        .img-ThuTien {
           position: absolute;
           top: 250px;
         }
@@ -374,5 +407,27 @@ $color-active: #111;
 
 .list-item-length {
   height: 30px;
+}
+
+/** icon */
+.mi-recent-log {
+  background-position: -648px -144px;
+}
+.mi-24 {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+}
+
+.mi {
+  background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat;
+  cursor: pointer;
+}
+/** dialog */
+.dialog-title{
+  height: 10%;
+  display: flex;
+  justify-content: space-between;
 }
 </style>

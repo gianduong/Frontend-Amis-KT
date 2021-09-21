@@ -108,6 +108,7 @@ export default {
   width: 100%;
   height: 100%;
   border-bottom: 2px solid #949494;
+  background: #FFF;
   /* max-height: 32px; */
 }
 .input-field input:focus {

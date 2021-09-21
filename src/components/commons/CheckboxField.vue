@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ rotate: isCheck }" class="checkbox-container">
+  <div class="checkbox-container">
     <div class="checkbox-field">
       <div v-if="isCheck" class="check-icon"></div>
     </div>
@@ -59,7 +59,4 @@ export default {
   margin-left: 10px;
 }
 
-.routate {
-  transform: rotate(45deg);
-}
 </style>
