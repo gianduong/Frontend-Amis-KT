@@ -791,13 +791,14 @@
     <div class="main-content">
       <div class="search-content">
         <div class="search-wrapper">
-          <InputField
+          <!-- <InputField
             :placeholder="'Tìm kiếm theo số, tên tài khoản'"
             :searchField="true"
             v-model="filterValue"
             v-debounce:300ms="handelFilter"
             ref="inputSearch"
-          />
+          /> -->
+          <Search/>
         </div>
 
         <v-tooltip bottom style="z-index: 100000">
@@ -836,19 +837,6 @@
       <!-- Table -->
 
       <div class="table-content">
-        <!-- <tree-table class="table" :columns="columns" :table-data="tableData">
-          <template #headerTemplate="headerProps">
-            <MenuHeader v-bind="headerProps" :sort-table="sortTable" />
-          </template>
-
-          <template #leafTemplate="leafProps">
-            <MenuLeaf v-bind="leafProps" />
-          </template>
-
-          <template #nodeTemplate="nodeProps">
-            <MenuNode v-bind="nodeProps" />
-          </template>
-        </tree-table> -->
         <tree-table class="table" :columns="columns" :table-data="tableData">
           <template #headerTemplate="headerProps">
             <MenuHeader v-bind="headerProps" :sort-table="sortTable" />
@@ -898,6 +886,8 @@ import queryString from "query-string";
 import DialogNotify from "../commons/DialogNotify.vue";
 import TreeTable from "vue-tree-table-component";
 import MenuLeaf from "./MenuLeaf";
+import SearchInput from "./SearchInput.vue"
+import Search from "./SearchAccount.vue"
 // import MenuNode from "./MenuNode";
 // import MenuHeader from "./MenuHeader";
 //#endregion
@@ -918,6 +908,8 @@ export default {
     MenuLeaf,
     MenuNode,
     MenuHeader,
+    Search,
+    SearchInput
   },
   //#endregion
 
@@ -998,7 +990,7 @@ export default {
         { label: "TÊN TIẾNG ANH", id: "ta" },
         { label: "DIỄN GIẢI", id: "dg" },
         { label: "TRANG THÁI", id: "tt" },
-        // { label: "CHỨC NĂNG", id: "cn" },
+        { label: "CHỨC NĂNG", id: "cn" },
       ],
       e1: 1,
       isFullSize: false, // trạng thái full size
