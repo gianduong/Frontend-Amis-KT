@@ -44,7 +44,9 @@ export default {
 };
 </script>
 <style lang='scss'>
-
+.v-main{
+  overflow: hidden;
+}
 .theme--light.v-text-field {
 }
 

@@ -16,7 +16,7 @@
     <!-- end header left -->
     <!-- header-right -->
     <div class="header-right">
-      <div style="width: 190px;height:30px; margin: 0 15px 10px 0;" class="search">
+      <div style="width: 250px;height:30px; margin: 0 15px 10px 0;" class="search">
           <InputField
             :placeholder="'Nhập từ khóa tìm kiếm'"
             :searchField="true"

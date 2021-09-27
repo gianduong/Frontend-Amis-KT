@@ -9,7 +9,7 @@
             color: #111;
             font-size: 13px;
           "
-          @click="tab = 1"
+          @click="tab = '1'"
           >Quy chình</v-tab
         >
         <v-tab
@@ -19,10 +19,16 @@
             color: #111;
             font-size: 13px;
           "
-          @click="tab = 2"
+          @click="tab = '2'"
           >Thu, chi tiền</v-tab
         >
       </v-tabs>
+      <v-tabs-items v-model="tab">
+        <v-tab-item value="2">
+          <div class="tab-2"><CAP /></div>
+          <!--  -->
+        </v-tab-item>
+      </v-tabs-items>
     </div>
     <!-- main content -->
     <!--  -->
@@ -95,7 +101,7 @@
                   @click="handleListChiTien(index)"
                   :key="index"
                   link
-                  :href="'#purchase-' + item.link"
+                  :href="'#Popup/' + item.link"
                 >
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
@@ -111,6 +117,8 @@
           height="80px"
           background-color="#fff"
           color="green"
+          hide-slider
+          
         >
           <v-tab
             to="/DI/DIVendor"
@@ -170,17 +178,19 @@
       transition="dialog-bottom-transition"
     >
       <v-card>
-        <Payment style="width:100%, height:100%"/>
+        <Payment style="width:100%, height:100%" />
       </v-card>
     </v-dialog>
   </div>
 </template>
 
 <script>
-import Payment from "./Payment.vue"
+import Payment from "./Payment.vue";
+import CAP from "./CollectAndPay.vue";
 export default {
-  components:{
+  components: {
     Payment,
+    CAP,
   },
   data() {
     return {
@@ -193,9 +203,9 @@ export default {
       ],
       kiemKeQuy: [{ title: "Kiểm kê" }],
       chiTien: [
-        { title: "Phiếu chi", link:"chitien" },
-        { title: "Trả tên theo hóa đơn", link:"tratien" },
-        { title: "Nộp thuế",link:"thue" },
+        { title: "Phiếu chi", link: "Payment" },
+        { title: "Trả tên theo hóa đơn", link: "tratien" },
+        { title: "Nộp thuế", link: "thue" },
       ],
     };
   },
@@ -404,7 +414,15 @@ $color-active: #111;
   height: 80px;
   text-decoration-line: none;
 }
-
+.tab-2 {
+  position: fixed;
+  top: 120px;
+  left: 190px;
+  background: #fff;
+  width: 90%;
+  height: 100%;
+  z-index: 1;
+}
 .list-item-length {
   height: 30px;
 }
@@ -425,9 +443,15 @@ $color-active: #111;
   cursor: pointer;
 }
 /** dialog */
-.dialog-title{
+.dialog-title {
   height: 10%;
   display: flex;
   justify-content: space-between;
+}
+.v-tabs {
+  border-bottom: 1px solid #d7d7d8 !important;
+}
+.v-tab {
+  font-size: 13px;
 }
 </style>

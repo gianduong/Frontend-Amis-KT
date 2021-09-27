@@ -88,7 +88,10 @@
             class="bottom-content-1"
             @click="followedDetail = !followedDetail"
           >
-            <div class="mi mi-16 mi-arrow-right--black" :class="{'rotate-icon-90': !followedDetail}"></div>
+            <div
+              class="mi mi-16 mi-arrow-right--black"
+              :class="{ 'rotate-icon-90': !followedDetail }"
+            ></div>
             <span class="content-1-title" style="font-size: 16px"
               >Theo giõi chi tiết theo</span
             >
@@ -833,7 +836,7 @@
       <!-- Table -->
 
       <div class="table-content">
-        <tree-table class="table" :columns="columns" :table-data="tableData">
+        <!-- <tree-table class="table" :columns="columns" :table-data="tableData">
           <template #headerTemplate="headerProps">
             <MenuHeader v-bind="headerProps" :sort-table="sortTable" />
           </template>
@@ -845,8 +848,20 @@
           <template #nodeTemplate="nodeProps">
             <MenuNode v-bind="nodeProps" />
           </template>
+        </tree-table> -->
+        <tree-table class="table" :columns="columns" :table-data="tableData">
+          <template #headerTemplate="headerProps">
+            <MenuHeader v-bind="headerProps" :sort-table="sortTable" />
+          </template>
+          <template #leafTemplate="leafProps">
+            <MenuLeaf v-bind="leafProps" />
+          </template>
+          <template #nodeTemplate="nodeProps">
+            <MenuNode v-bind="nodeProps" />
+          </template>
         </tree-table>
       </div>
+
       <!-- end table-->
       <!--  -->
     </div>
@@ -855,7 +870,7 @@
     <div class="pagination-container">
       <div class="total-item">
         Tổng số : <span class="total-value">{{ totalItem }}</span> bản ghi
-      </div>    
+      </div>
     </div>
     <!-- End of pagination -->
     <!--  -->
@@ -866,6 +881,9 @@
 
 <script>
 //#region Import dữ liệu
+import MenuNode from './SortingNode'
+import MenuHeader from "./SortingHeader";
+import sortData from "../constant/SortData";
 import CheckboxField from "../commons/CheckboxField.vue";
 import Button from "../commons/Button.vue";
 import Combobox from "../commons/Combobox.vue";
@@ -880,8 +898,8 @@ import queryString from "query-string";
 import DialogNotify from "../commons/DialogNotify.vue";
 import TreeTable from "vue-tree-table-component";
 import MenuLeaf from "./MenuLeaf";
-import MenuNode from "./MenuNode";
-import MenuHeader from "./MenuHeader";
+// import MenuNode from "./MenuNode";
+// import MenuHeader from "./MenuHeader";
 //#endregion
 
 export default {
@@ -1097,6 +1115,9 @@ export default {
 
   methods: {
     //#region Các hàm xử lý logic
+    sortTable(params) {
+                sortData(this.tableData, params)
+            },
     /**
      * bắt sự kiện đóng dialog của dialog con
      * CreatedBy: NGDuong (17/08/2021)
@@ -1620,7 +1641,7 @@ $color-active: #111;
 
 .mi-arrow-right--black {
   background-position: -320px -360px;
-  transition: all .2s ease-out;
+  transition: all 0.2s ease-out;
 }
 
 .mi-chevron-left {
@@ -1913,6 +1934,8 @@ $color-active: #111;
 }
 .table {
   width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /** acc */

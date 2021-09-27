@@ -72,6 +72,7 @@ export default {
   border-right: 1px dotted #c7c7c7;
   font-weight: 700;
   padding: 5px 10px;
+  
 }
 .menu-node {
   padding-right: 1.5rem;
